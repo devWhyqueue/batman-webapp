@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 import { FooterComponent } from './layouts/footer/footer.component';
 import { NavbarComponent } from './layouts/navbar/navbar.component';
 import { HomeModule } from './home/home.module';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { HomeModule } from './home/home.module';
     BrowserAnimationsModule,
     NgbModule,
     ToastrModule.forRoot(),
+    SharedModule.forRoot(),
     HomeModule,
     AppRoutingModule
   ],
