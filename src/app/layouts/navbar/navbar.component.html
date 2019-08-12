@@ -1,0 +1,31 @@
+<nav class="navbar navbar-dark navbar-expand-sm col-sm-12 mb-3" [ngSwitch]="isAuthenticated()">
+    <a class="navbar-brand" routerLink="/">
+        <img src="../../../assets/images/logo.png" width="50" height="50" alt="">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+        aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                <a class="nav-link" routerLink="/registrations">Starterlisten</a>
+            </li>
+            <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                <a class="nav-link" routerLink="/registrations/register">An-/Abmeldung</a>
+            </li>
+            <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                <a class="nav-link" routerLink="/status">Status</a>
+            </li>
+            <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                <a class="nav-link" routerLink="/status">Profil</a>
+            </li>
+        </ul>
+    </div>
+    <form action="logout" method="post" *ngSwitchCase="true">
+        <input type="submit" value="Logout" class="btn btn-outline-danger btn-lg my-2 my-sm-0" />
+    </form>
+    <form action="login" method="get" *ngSwitchCase="false">
+        <input type="submit" value="Login" class="btn btn-outline-primary btn-lg my-2 my-sm-0" />
+    </form>
+</nav>

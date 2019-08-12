@@ -1,20 +1,28 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrModule } from 'ngx-toastr';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FooterComponent } from './layouts/footer/footer.component';
+import { NavbarComponent } from './layouts/navbar/navbar.component';
+import { HomeModule } from './home/home.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    FooterComponent
+    FooterComponent,
+    NavbarComponent
   ],
   imports: [
-    BrowserModule,
-    AppRoutingModule,
-    NgbModule
+    CommonModule,
+    BrowserAnimationsModule,
+    NgbModule,
+    ToastrModule.forRoot(),
+    HomeModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]

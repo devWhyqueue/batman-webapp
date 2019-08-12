@@ -1,13 +1,13 @@
 .footer {
-    background-color: #ebecf8;
-    font-weight: lighter;
-}
+  background-color: #ebecf8;
+  font-weight: lighter;
 
-.footer a {
+  a {
     color: black;
     font-weight: normal;
-}
 
-.footer a:hover {
-    font-weight: bold;
+    :hover {
+      font-weight: bold;
+    }
+  }
 }
