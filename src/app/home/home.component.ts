@@ -7,6 +7,8 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+  private images = ['../../assets/images/home/sp1.jpg', '../../assets/images/home/sp2.jpg', '../../assets/images/home/sp3.jpg'];
+  private tournament;
 
   constructor(private toastrService: ToastrService) { }
 
