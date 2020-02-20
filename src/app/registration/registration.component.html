@@ -1,0 +1,85 @@
+<h1>Turnieranmeldung</h1>
+<hr/>
+
+<div class="d-flex flex-wrap">
+  <div class="card m-3">
+    <h5 class="card-header">Doppel</h5>
+    <div class="card-body">
+      <form class="form">
+        <div class="form-group">
+          <label for="doubleDivision" class="mr-1">Spielklasse:</label>
+          <select id="doubleDivision" class="form-control">
+            <option [value]="'A'" *ngFor="let division of []">{{'attribute'}}</option>
+          </select>
+        </div>
+        <fieldset class="border p-2">
+          <legend class="w-auto">Partner|in</legend>
+          <div class="form-group">
+            <label for="doubleFirst">Vorname:</label>
+            <input type="text" class="form-control" id="doubleFirst">
+          </div>
+          <div class="form-group">
+            <label for="doubleLast">Nachname:</label>
+            <input type="text" class="form-control" id="doubleLast">
+          </div>
+          <div class="form-group">
+            <label for="doubleClub">Verein:</label>
+            <input type="text" class="form-control" id="doubleClub">
+          </div>
+        </fieldset>
+      </form>
+    </div>
+    <div class="card-footer text-muted">
+      <button type="submit" class="btn btn-primary">Verbindlich anmelden</button>
+    </div>
+  </div>
+
+  <div class="card m-3">
+    <h5 class="card-header">Mixed</h5>
+    <div class="card-body">
+      <form class="form">
+        <div class="form-group">
+          <label for="mixedDivision" class="mr-1">Spielklasse:</label>
+          <select id="mixedDivision" class="form-control">
+            <option [value]="'A'" *ngFor="let division of []">{{'attribute'}}</option>
+          </select>
+        </div>
+        <fieldset class="border p-2">
+          <legend class="w-auto">Partner|in</legend>
+          <div class="form-group">
+            <label for="mixedFirst">Vorname:</label>
+            <input type="text" class="form-control" id="mixedFirst">
+          </div>
+          <div class="form-group">
+            <label for="mixedLast">Nachname:</label>
+            <input type="text" class="form-control" id="mixedLast">
+          </div>
+          <div class="form-group">
+            <label for="mixedClub">Verein:</label>
+            <input type="text" class="form-control" id="mixedClub">
+          </div>
+        </fieldset>
+      </form>
+    </div>
+    <div class="card-footer text-muted">
+      <button type="submit" class="btn btn-primary">Verbindlich anmelden</button>
+    </div>
+  </div>
+
+  <div class="card m-3">
+    <h5 class="card-header">Einzel</h5>
+    <div class="card-body">
+      <form class="form">
+        <div class="form-group">
+          <label for="singleDivision" class="mr-1">Spielklasse:</label>
+          <select id="singleDivision" class="form-control">
+            <option [value]="'A'" *ngFor="let division of []">{{'attribute'}}</option>
+          </select>
+        </div>
+      </form>
+    </div>
+    <div class="card-footer text-muted">
+      <button type="submit" class="btn btn-primary">Verbindlich anmelden</button>
+    </div>
+  </div>
+</div>

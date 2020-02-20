@@ -1,7 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
+@import 'variables';
 @import "~bootstrap/scss/bootstrap";
 @import "~ngx-toastr/toastr-bs4-alert";
 
+html, body {
+  height: 100vh;
+}
+
 .toast-top-right {
-  top: 85px;
+  top: 90px;
 }

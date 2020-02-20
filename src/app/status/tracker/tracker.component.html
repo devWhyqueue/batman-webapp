@@ -1,0 +1,10 @@
+<ul class="progress-tracker progress-tracker--text progress-tracker--center">
+  <li *ngFor="let step of steps" class="progress-step"
+      [ngClass]="{'is-complete': step.completed, 'is-active': step.active}">
+    <span class="progress-marker"></span>
+    <div class="progress-text">
+      <h4 class="progress-title">{{step.title}}</h4>
+      {{step.text}}
+    </div>
+  </li>
+</ul>
