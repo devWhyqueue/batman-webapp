@@ -5,7 +5,7 @@
   background-color: $danger;
 }
 
-.progress-step:not(.is-active) .progress-marker:before {
+.progress-step.is-complete .progress-marker:before {
   background-color: $primary;
 }
 
