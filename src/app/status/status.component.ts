@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Step} from '../shared/model/step.model';
 
 @Component({
@@ -8,11 +8,20 @@ import {Step} from '../shared/model/step.model';
 })
 export class StatusComponent implements OnInit {
 
-  steps = [new Step('Auf Warteliste', 'lorem', false, true),
+  singleSteps = [new Step('Auf Warteliste', 'lorem', true, false),
+    new Step('Auf fsdgssdf', 'lorem', false, false),
+    new Step('Auf sdfg', 'lorem', false, false)];
+
+  doubleSteps = [new Step('Auf Warteliste', 'lorem', false, true),
     new Step('Auf fsdgssdf', 'lorem', true, false),
     new Step('Auf sdfg', 'lorem', false, false)];
 
-  constructor() { }
+  mixedSteps = [new Step('Auf Warteliste', 'lorem', false, true),
+    new Step('Auf fsdgssdf', 'lorem', false, true),
+    new Step('Auf sdfg', 'lorem', true, false)];
+
+  constructor() {
+  }
 
   ngOnInit() {
   }

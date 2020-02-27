@@ -1,0 +1,190 @@
+<h1>Registrierung</h1>
+<hr/>
+
+
+<div class="alert alert-success" *ngIf="success">
+  <strong>Registrierung erfolgreich!</strong> Du kannst dich jetzt anmelden.
+</div>
+
+<div class="alert alert-danger" *ngIf="error">
+  <strong>Registrierung fehlgeschlagen!</strong> Versuche es später erneut.
+</div>
+
+<div class="alert alert-danger" *ngIf="errorEmailExists">
+  <strong>E-Mail-Adresse wird bereits verwendet!</strong> Bitte wähle eine andere.
+</div>
+
+<div class="alert alert-danger" *ngIf="doNotMatch">
+  Die Passwörter stimmen nicht überein!
+</div>
+
+
+<form name="form" role="form" (ngSubmit)="register()" [formGroup]="registerForm" *ngIf="!success">
+
+  <div class="form-group">
+    <label class="form-control-label" for="first">Vorname</label>
+    <input type="text" class="form-control" id="first" name="first" placeholder="Max"
+           formControlName="first" #first>
+    <div
+      *ngIf="registerForm.get('first')!.invalid && (registerForm.get('first')!.dirty || registerForm.get('first')!.touched)">
+      <small class="form-text text-danger" *ngIf="registerForm.get('first')?.errors?.required">
+        Vorname erforderlich!
+      </small>
+      <small class="form-text text-danger" *ngIf="registerForm.get('first')?.errors?.minlength"
+             jhiTranslate="register.messages.validate.login.minlength">
+        Der Vorname muss mindestens ein Zeichen lang sein!
+      </small>
+      <small class="form-text text-danger" *ngIf="registerForm.get('first')?.errors?.maxlength">
+        Der Vorname darf nicht länger als 50 Zeichen lang sein!
+      </small>
+      <small class="form-text text-danger" *ngIf="registerForm.get('first')?.errors?.pattern">
+        Der Vorname darf nur Buchstaben enthalten!
+      </small>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="form-control-label" for="last">Nachname</label>
+    <input type="text" class="form-control" id="last" name="last" placeholder="Mustermann"
+           formControlName="last" #last>
+    <div
+      *ngIf="registerForm.get('last')!.invalid && (registerForm.get('last')!.dirty || registerForm.get('last')!.touched)">
+      <small class="form-text text-danger" *ngIf="registerForm.get('last')?.errors?.required">
+        Nachname erforderlich!
+      </small>
+      <small class="form-text text-danger" *ngIf="registerForm.get('last')?.errors?.minlength"
+             jhiTranslate="register.messages.validate.login.minlength">
+        Der Nachname muss mindestens ein Zeichen lang sein!
+      </small>
+      <small class="form-text text-danger" *ngIf="registerForm.get('last')?.errors?.maxlength">
+        Der Nachname darf nicht länger als 50 Zeichen lang sein!
+      </small>
+      <small class="form-text text-danger" *ngIf="registerForm.get('last')?.errors?.pattern">
+        Der Nachname darf nur Buchstaben enthalten!
+      </small>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="form-control-label" for="gender">Geschlecht</label>
+    <select class="form-control" id="gender" name="gender" placeholder="Geschlecht"
+            formControlName="gender" #gender>
+      <option [ngValue]="null"></option>
+      <option [ngValue]="Gender.MALE">männlich</option>
+      <option [ngValue]="Gender.FEMALE">weiblich</option>
+    </select>
+    <div
+      *ngIf="registerForm.get('gender')!.invalid && (registerForm.get('gender')!.dirty || registerForm.get('gender')!.touched)">
+      <small class="form-text text-danger" *ngIf="registerForm.get('gender')?.errors?.required">
+        Geschlecht erforderlich!
+      </small>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="form-control-label" for="club">Verein</label>
+    <input type="text" class="form-control" id="club" name="club" placeholder="SV Musterstadt"
+           formControlName="club" #club>
+    <div
+      *ngIf="registerForm.get('club')!.invalid && (registerForm.get('club')!.dirty || registerForm.get('club')!.touched)">
+      <small class="form-text text-danger" *ngIf="registerForm.get('club')?.errors?.required">
+        Verein erforderlich!
+      </small>
+      <small class="form-text text-danger" *ngIf="registerForm.get('club')?.errors?.minlength"
+             jhiTranslate="register.messages.validate.login.minlength">
+        Der Verein muss mindestens fünf Zeichen lang sein!
+      </small>
+      <small class="form-text text-danger" *ngIf="registerForm.get('club')?.errors?.maxlength">
+        Der Verein darf nicht länger als 50 Zeichen lang sein!
+      </small>
+      <small class="form-text text-danger" *ngIf="registerForm.get('club')?.errors?.pattern">
+        Der Verein darf nur Buchstaben enthalten!
+      </small>
+    </div>
+  </div>
+
+
+  <div class="form-group">
+    <label class="form-control-label" for="email">E-Mail</label>
+    <input type="email" class="form-control" id="email" name="email"
+           placeholder="max.mustermann@example.de"
+           formControlName="email">
+
+    <div
+      *ngIf="registerForm.get('email')!.invalid && (registerForm.get('email')!.dirty || registerForm.get('email')!.touched)">
+      <small class="form-text text-danger"
+             *ngIf="registerForm.get('email')?.errors?.required">
+        E-Mail-Adresse erforderlich!
+      </small>
+
+      <small class="form-text text-danger"
+             *ngIf="registerForm.get('email')?.errors?.email">
+        Ungültige E-Mail-Adresse!
+      </small>
+
+      <small class="form-text text-danger"
+             *ngIf="registerForm.get('email')?.errors?.minlength">
+        Die E-Mail-Adresse muss mindestens fünf Zeichen lang sein!
+      </small>
+
+      <small class="form-text text-danger"
+             *ngIf="registerForm.get('email')?.errors?.maxlength">
+        Die E-Mail-Adresse darf nicht länger als 100 Zeichen lang sein!
+      </small>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="form-control-label" for="password">Passwort</label>
+    <input type="password" class="form-control" id="password" name="password" placeholder="*****"
+           formControlName="password">
+
+    <div
+      *ngIf="registerForm.get('password')!.invalid && (registerForm.get('password')!.dirty || registerForm.get('password')!.touched)">
+      <small class="form-text text-danger"
+             *ngIf="registerForm.get('password')?.errors?.required">
+        Passwort erforderlich!
+      </small>
+
+      <small class="form-text text-danger"
+             *ngIf="registerForm.get('password')?.errors?.minlength">
+        Das Passwort muss mindesten fünf Zeichen lang sein!
+      </small>
+
+      <small class="form-text text-danger"
+             *ngIf="registerForm.get('password')?.errors?.maxlength">
+        Das Passwort darf nicht länger als 50 Zeichen lang sein!
+      </small>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="form-control-label" for="confirmPassword"
+           jhiTranslate="global.form.confirmpassword.label">Passwort bestätigen</label>
+    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
+           placeholder="*****"
+           formControlName="confirmPassword">
+
+    <div
+      *ngIf="registerForm.get('confirmPassword')!.invalid && (registerForm.get('confirmPassword')!.dirty || registerForm.get('confirmPassword')!.touched)">
+      <small class="form-text text-danger"
+             *ngIf="registerForm.get('confirmPassword')?.errors?.required">
+        Passwortbestätigung erforderlich!
+      </small>
+
+      <small class="form-text text-danger"
+             *ngIf="registerForm.get('confirmPassword')?.errors?.minlength">
+        Das Bestätigungspasswort muss mindestens fünf Zeichen lang sein!
+      </small>
+
+      <small class="form-text text-danger"
+             *ngIf="registerForm.get('confirmPassword')?.errors?.maxlength">
+        Das Bestätigungspasswort darf nicht länger als 50 Zeichen lang sein!
+      </small>
+    </div>
+  </div>
+
+  <button type="submit" [disabled]="registerForm.invalid" class="btn btn-primary"
+          jhiTranslate="register.form.button">Registrieren
+  </button>
+</form>

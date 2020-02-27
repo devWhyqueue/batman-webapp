@@ -1,0 +1,39 @@
+<div class="modal-header">
+  <h4 class="modal-title">Anmelden</h4>
+
+  <button aria-label="Close" data-dismiss="modal" class="close" type="button" (click)="activeModal.dismiss('closed')">
+    <span aria-hidden="true">x</span>
+  </button>
+</div>
+
+<div class="modal-body">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="alert alert-danger" *ngIf="authenticationError">
+        <strong>Anmeldung fehlgeschlagen!</strong> Prüfe deine Anmeldedaten und versuche es erneut.
+      </div>
+    </div>
+
+    <div class="col-md-8">
+      <form class="form" role="form" (ngSubmit)="login()" [formGroup]="loginForm">
+        <div class="form-group">
+          <label class="username-label" for="mail">E-Mail</label>
+          <input type="text" class="form-control" name="mail" id="mail" placeholder="max.mustermann@example.com"
+                 formControlName="mail" #mail>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Passwort</label>
+          <input type="password" class="form-control" name="password" id="password" placeholder="*******"
+                 formControlName="password">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Anmelden</button>
+      </form>
+      <div class="mt-3 alert alert-warning">
+        <span>Du hast noch kein Konto? </span>
+        <a class="cursor-pointer alert-link" (click)="register()">Registriere dich jetzt!</a>
+      </div>
+    </div>
+  </div>
+</div>
