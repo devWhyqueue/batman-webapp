@@ -10,13 +10,14 @@ import {LoginService} from '../../core/login/login.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements AfterViewInit {
-  @ViewChild('mail', { static: false })
-  mail?: ElementRef;
+  // @ts-ignore
+  @ViewChild('email')
+  email?: ElementRef;
 
   authenticationError = false;
 
   loginForm = this.fb.group({
-    mail: [''],
+    email: [''],
     password: ['']
   });
 
@@ -28,15 +29,15 @@ export class LoginComponent implements AfterViewInit {
   ) {}
 
   ngAfterViewInit(): void {
-    if (this.mail) {
-      this.mail.nativeElement.focus();
+    if (this.email) {
+      this.email.nativeElement.focus();
     }
   }
 
   cancel(): void {
     this.authenticationError = false;
     this.loginForm.patchValue({
-      username: '',
+      email: '',
       password: ''
     });
     this.activeModal.dismiss('cancel');
@@ -45,7 +46,7 @@ export class LoginComponent implements AfterViewInit {
   login(): void {
     this.loginService
     .login({
-      mail: this.loginForm.get('mail').value,
+      email: this.loginForm.get('email').value,
       password: this.loginForm.get('password').value
     })
     .subscribe(

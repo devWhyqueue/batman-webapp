@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {LoginModalService} from '../../core/login/login-modal.service';
 import {LoginService} from '../../core/login/login.service';
 import {Router} from '@angular/router';
+import {UserService} from '../../core/auth/user.service';
 
 @Component({
   selector: 'app-navbar',
@@ -10,7 +11,8 @@ import {Router} from '@angular/router';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor(private loginModalService: LoginModalService, private loginService: LoginService, private router: Router) {
+  constructor(private loginModalService: LoginModalService, private loginService: LoginService, private router: Router,
+              private accountService: UserService) {
   }
 
   ngOnInit() {
@@ -25,9 +27,8 @@ export class NavbarComponent implements OnInit {
     this.router.navigate(['']);
   }
 
-  // TODO: Add impl
   isAuthenticated(): boolean {
-    return false;
+    return this.accountService.isAuthenticated();
   }
 
 }

@@ -1,14 +1,8 @@
 <div class="d-flex flex-column align-items-center text-center">
   <h1>Willkommen!</h1>
   <div class="mb-3">
-    <div *ngIf="tournament; else noTournament">
-      <h3>Benutze die Navigationsleiste, um dich für den {{ tournament.name }} an- oder
-        abzumelden.</h3>
-    </div>
-    <ng-template #noTournament>
-      <h3>Aktuell wurde noch kein Turnier erstellt. Besuche für Updates die Website zu einem
-        späteren Zeitpunkt erneut.</h3>
-    </ng-template>
+    <h3>Benutze die Navigationsleiste, um dich für den {{ tournament.name }} an- oder
+      abzumelden.</h3>
   </div>
   <ngb-carousel class="w-50">
     <ng-template ngbSlide *ngFor="let image of images">

@@ -72,7 +72,7 @@ export class UserService {
   }
 
   private fetch(): Observable<User> {
-    return this.http.get<User>(this.authServerUrl + 'user');
+    return this.http.get<User>(this.authServerUrl + 'users/self');
   }
 
   private navigateToStoredUrl(): void {

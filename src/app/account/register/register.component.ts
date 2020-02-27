@@ -13,8 +13,9 @@ import * as XRegExp from 'xregexp';
 export class RegisterComponent implements OnInit {
   Gender = Gender;
 
-  @ViewChild('mail', {static: false})
-  mail?: ElementRef;
+  // @ts-ignore
+  @ViewChild('email')
+  email?: ElementRef;
 
   doNotMatch = false;
   error = false;
@@ -25,10 +26,10 @@ export class RegisterComponent implements OnInit {
     email: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(254), Validators.email]],
     password: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
     confirmPassword: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
-    first: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50), Validators.pattern(XRegExp('^\\pL+$'))]],
-    last: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50), Validators.pattern(XRegExp('^\\pL+$'))]],
+    first: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50), Validators.pattern(XRegExp('^[\\pL ]+$'))]],
+    last: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50), Validators.pattern(XRegExp('^[\\pL ]+$'))]],
     gender: ['', [Validators.required]],
-    club: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50), Validators.pattern(XRegExp('^\\pL+$'))]],
+    club: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50), Validators.pattern(XRegExp('^[\\pL ]+$'))]],
   });
 
   constructor(private fb: FormBuilder, private registerService: RegisterService) {
