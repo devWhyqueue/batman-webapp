@@ -26,8 +26,12 @@ export class UserService {
   ) {
   }
 
-  save(account: User): Observable<{}> {
-    return this.http.post(this.authServerUrl + 'users', account);
+  update(account: User): Observable<{}> {
+    return this.http.put(this.authServerUrl + 'users', account);
+  }
+
+  delete(): Observable<{}> {
+    return this.http.delete(this.authServerUrl + 'users/self');
   }
 
   authenticate(identity: User | null): void {

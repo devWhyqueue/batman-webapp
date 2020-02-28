@@ -23,7 +23,7 @@
 
   <div class="form-group">
     <label class="form-control-label" for="first">Vorname</label>
-    <input type="text" class="form-control" id="first" name="first" placeholder="Max"
+    <input type="text" class="form-control" id="first" name="first" placeholder="Dein Vorname"
            formControlName="first" #first>
     <div
       *ngIf="registerForm.get('first')!.invalid && (registerForm.get('first')!.dirty || registerForm.get('first')!.touched)">
@@ -45,7 +45,7 @@
 
   <div class="form-group">
     <label class="form-control-label" for="last">Nachname</label>
-    <input type="text" class="form-control" id="last" name="last" placeholder="Mustermann"
+    <input type="text" class="form-control" id="last" name="last" placeholder="Dein Nachname"
            formControlName="last" #last>
     <div
       *ngIf="registerForm.get('last')!.invalid && (registerForm.get('last')!.dirty || registerForm.get('last')!.touched)">
@@ -67,9 +67,9 @@
 
   <div class="form-group">
     <label class="form-control-label" for="gender">Geschlecht</label>
-    <select class="form-control" id="gender" name="gender" placeholder="Geschlecht"
+    <select class="form-control" id="gender" name="gender"
             formControlName="gender" #gender>
-      <option [ngValue]="null"></option>
+      <option [ngValue]="null" disabled>Dein Geschlecht</option>
       <option [ngValue]="Gender.MALE">männlich</option>
       <option [ngValue]="Gender.FEMALE">weiblich</option>
     </select>
@@ -83,7 +83,7 @@
 
   <div class="form-group">
     <label class="form-control-label" for="club">Verein</label>
-    <input type="text" class="form-control" id="club" name="club" placeholder="SV Musterstadt"
+    <input type="text" class="form-control" id="club" name="club" placeholder="Dein Verein"
            formControlName="club" #club>
     <div
       *ngIf="registerForm.get('club')!.invalid && (registerForm.get('club')!.dirty || registerForm.get('club')!.touched)">
@@ -107,7 +107,7 @@
   <div class="form-group">
     <label class="form-control-label" for="email">E-Mail</label>
     <input type="email" class="form-control" id="email" name="email"
-           placeholder="max.mustermann@example.de"
+           placeholder="Deine E-Mail-Adresse"
            formControlName="email">
 
     <div
@@ -184,7 +184,6 @@
     </div>
   </div>
 
-  <button type="submit" [disabled]="registerForm.invalid" class="btn btn-primary"
-          jhiTranslate="register.form.button">Registrieren
+  <button type="submit" [disabled]="registerForm.invalid" class="btn btn-primary">Registrieren
   </button>
 </form>

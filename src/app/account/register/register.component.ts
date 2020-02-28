@@ -28,7 +28,7 @@ export class RegisterComponent implements OnInit {
     confirmPassword: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
     first: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50), Validators.pattern(XRegExp('^[\\pL ]+$'))]],
     last: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50), Validators.pattern(XRegExp('^[\\pL ]+$'))]],
-    gender: ['', [Validators.required]],
+    gender: [null, [Validators.required]],
     club: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50), Validators.pattern(XRegExp('^[\\pL ]+$'))]],
   });
 
@@ -60,7 +60,7 @@ export class RegisterComponent implements OnInit {
   }
 
   private processError(response: HttpErrorResponse): void {
-    if (response.status === 400) {
+    if (response.status === 409) {
       this.errorEmailExists = true;
     } else {
       this.error = true;
