@@ -1,4 +1,5 @@
 import {Gender} from './gender.enum';
+import {Authority} from './authority.model';
 
 export interface IUser {
   id?: any;
@@ -8,7 +9,7 @@ export interface IUser {
   club?: string;
   email?: string;
   password?: string;
-  authorities?: string[];
+  authorities?: Authority[];
 }
 
 export class User implements IUser {
@@ -20,7 +21,7 @@ export class User implements IUser {
     public club?: string,
     public email?: string,
     public password?: string,
-    public authorities?: string[]
+    public authorities?: Authority[]
   ) {
   }
 }

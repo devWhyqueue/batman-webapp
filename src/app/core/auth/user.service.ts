@@ -8,6 +8,7 @@ import {catchError, shareReplay, tap} from 'rxjs/operators';
 import {StateStorageService} from './state-storage.service';
 import {environment} from '../../../environments/environment';
 import {User} from '../user/user.model';
+import {Authority} from '../user/authority.model';
 
 @Injectable({providedIn: 'root'})
 export class UserService {
@@ -41,7 +42,9 @@ export class UserService {
     if (!Array.isArray(authorities)) {
       authorities = [authorities];
     }
-    return this.userIdentity.authorities.some((authority: string) => authorities.includes(authority));
+    return this.userIdentity.authorities.map((authority: Authority) => authority.name).some((authority: string) => {
+      return authorities.includes(authority);
+    });
   }
 
   identity(force?: boolean): Observable<User | null> {

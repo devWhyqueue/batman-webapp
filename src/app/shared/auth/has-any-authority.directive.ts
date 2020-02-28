@@ -23,7 +23,7 @@ export class HasAnyAuthorityDirective implements OnDestroy {
   constructor(private accountService: UserService, private templateRef: TemplateRef<any>, private viewContainerRef: ViewContainerRef) {}
 
   @Input()
-  set jhiHasAnyAuthority(value: string | string[]) {
+  set appHasAnyAuthority(value: string | string[]) {
     this.authorities = typeof value === 'string' ? [value] : value;
     this.updateView();
     // Get notified each time authentication state changes.
