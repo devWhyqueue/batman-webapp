@@ -1,5 +1,5 @@
 export enum FieldType {
-  MALE = 'MALE',
-  FEMALE = 'FEMALE',
-  MIXED = 'MIXED'
+  MALE,
+  FEMALE,
+  MIXED
 }

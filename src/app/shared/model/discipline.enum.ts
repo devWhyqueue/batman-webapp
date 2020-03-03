@@ -1,5 +1,5 @@
 export enum DisciplineType {
-  SINGLE = 'SINGLE',
-  DOUBLE = 'DOUBLE',
-  MIXED = 'MIXED'
+  SINGLE,
+  DOUBLE ,
+  MIXED
 }

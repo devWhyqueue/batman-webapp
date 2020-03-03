@@ -14,25 +14,25 @@ export class RegistrationFilter {
   divisions(disciplineType: DisciplineType, fieldType: FieldType): string[] {
     return [...new Set(
       this.registrations
-      .filter(r => r.tournamentDiscipline.discipline.disciplineType === disciplineType)
-      .filter(r => r.tournamentDiscipline.discipline.fieldType === fieldType)
+      .filter(r => r.tournamentDiscipline.discipline.disciplineType === DisciplineType[String(disciplineType)])
+      .filter(r => r.tournamentDiscipline.discipline.fieldType === FieldType[String(fieldType)])
       .map(r => r.tournamentDiscipline.discipline.division.name)
     )];
   }
 
   starting(disciplineType: DisciplineType, divisionName: string, fieldType: FieldType): IRegistration[] {
     return this.registrations
-    .filter(r => r.tournamentDiscipline.discipline.disciplineType === disciplineType)
-    .filter(r => [State.PAYMENT_PENDING, State.CONFIRMED].includes(r.state))
+    .filter(r => r.tournamentDiscipline.discipline.disciplineType === DisciplineType[String(disciplineType)])
+    .filter(r => [State.PAYMENT_PENDING, State.CONFIRMED].includes(State[String(r.state)]))
     .filter(r => r.tournamentDiscipline.discipline.division.name === divisionName)
-    .filter(r => r.tournamentDiscipline.discipline.fieldType === fieldType);
+    .filter(r => r.tournamentDiscipline.discipline.fieldType === FieldType[String(fieldType)]);
   }
 
   waiting(disciplineType: DisciplineType, divisionName: string, fieldType: FieldType): IRegistration[] {
     return this.registrations
-    .filter(r => r.tournamentDiscipline.discipline.disciplineType === disciplineType)
-    .filter(r => r.state === State.WAITING)
+    .filter(r => r.tournamentDiscipline.discipline.disciplineType === DisciplineType[String(disciplineType)])
+    .filter(r => State[String(r.state)] === State.WAITING)
     .filter(r => r.tournamentDiscipline.discipline.division.name === divisionName)
-    .filter(r => r.tournamentDiscipline.discipline.fieldType === fieldType);
+    .filter(r => r.tournamentDiscipline.discipline.fieldType === FieldType[String(fieldType)]);
   }
 }

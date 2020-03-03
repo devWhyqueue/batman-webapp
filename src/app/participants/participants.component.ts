@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {RegistrationService} from './registration.service';
+import {RegistrationService} from '../shared/service/registration.service';
 import {DisciplineType} from '../shared/model/discipline.enum';
 import {HttpResponse} from '@angular/common/http';
 import {IRegistration} from '../shared/model/registration.model';
@@ -7,6 +7,7 @@ import {TableService} from '../shared/table/table.service';
 import {FormBuilder} from '@angular/forms';
 import {FieldType} from '../shared/model/field.enum';
 import {RegistrationFilter} from './registration.filter';
+import {Gender} from '../core/user/gender.enum';
 
 
 @Component({
@@ -52,14 +53,14 @@ export class ParticipantsComponent implements OnInit {
 
   ngOnInit() {
     this.registrationService
-    .getCurrentRegistrations()
-    .subscribe((res: HttpResponse<IRegistration[]>) => {
-      this.registrations = (res.body || []);
-      this.registrationFilter = new RegistrationFilter(this.registrations);
-      this.singleFilter();
-      this.doubleFilter();
-      this.mixedFilter();
-    });
+      .getCurrentRegistrations()
+      .subscribe((res: HttpResponse<IRegistration[]>) => {
+        this.registrations = (res.body || []);
+        this.registrationFilter = new RegistrationFilter(this.registrations);
+        this.singleFilter();
+        this.doubleFilter();
+        this.mixedFilter();
+      });
   }
 
   singleFilter() {
@@ -67,10 +68,12 @@ export class ParticipantsComponent implements OnInit {
     if (!this.singleForm.get(['divisionName']).value && this.singleDivisions.length) {
       this.singleForm.get(['divisionName']).setValue(this.singleDivisions[0]);
     }
+
     this.singleStarting = this.tableService.initItems(
       this.registrationFilter.starting(DisciplineType.SINGLE,
         this.singleForm.get(['divisionName']).value, this.singleForm.get(['fieldType']).value),
       [['player.firstName'], ['player.lastName'], ['player.club']]);
+
     this.singleWaiting = this.tableService.initItems(
       this.registrationFilter.waiting(DisciplineType.SINGLE,
         this.singleForm.get(['divisionName']).value, this.singleForm.get(['fieldType']).value),
@@ -86,10 +89,12 @@ export class ParticipantsComponent implements OnInit {
     if (!this.doubleForm.get(['divisionName']).value && this.doubleDivisions.length) {
       this.doubleForm.get(['divisionName']).setValue(this.doubleDivisions[0]);
     }
+
     this.doubleStarting = this.tableService.initItems(
       this.registrationFilter.starting(DisciplineType.DOUBLE,
         this.doubleForm.get(['divisionName']).value, this.doubleForm.get(['fieldType']).value),
       [['player.firstName', 'player.lastName'], ['player.club'], ['partner.firstName', 'partner.lastName'], ['partner.club']]);
+
     this.doubleWaiting = this.tableService.initItems(
       this.registrationFilter.waiting(DisciplineType.DOUBLE,
         this.doubleForm.get(['divisionName']).value, this.doubleForm.get(['fieldType']).value),
@@ -105,13 +110,27 @@ export class ParticipantsComponent implements OnInit {
     if (!this.mixedForm.get(['divisionName']).value && this.mixedDivisions.length) {
       this.mixedForm.get(['divisionName']).setValue(this.mixedDivisions[0]);
     }
-    this.mixedStarting = this.tableService.initItems(
-      this.registrationFilter.starting(DisciplineType.MIXED,
-        this.mixedForm.get(['divisionName']).value, FieldType.MIXED),
+
+    const mixedStartingRegs = this.registrationFilter.starting(DisciplineType.MIXED,
+      this.mixedForm.get(['divisionName']).value, FieldType.MIXED);
+    this.switchPlayerAndPartner(mixedStartingRegs);
+    this.mixedStarting = this.tableService.initItems(mixedStartingRegs,
       [['player.firstName', 'player.lastName'], ['player.club'], ['partner.firstName', 'partner.lastName'], ['partner.club']]);
-    this.mixedWaiting = this.tableService.initItems(
-      this.registrationFilter.waiting(DisciplineType.MIXED,
-        this.mixedForm.get(['divisionName']).value, FieldType.MIXED),
+
+    const mixedWaitingRegs = this.registrationFilter
+      .waiting(DisciplineType.MIXED, this.mixedForm.get(['divisionName']).value, FieldType.MIXED);
+    this.switchPlayerAndPartner(mixedWaitingRegs);
+    this.mixedWaiting = this.tableService.initItems(mixedWaitingRegs,
       [['player.firstName', 'player.lastName'], ['player.club'], ['partner.firstName', 'partner.lastName'], ['partner.club']]);
+  }
+
+  private switchPlayerAndPartner(registrations: IRegistration[]): void {
+    registrations.forEach(r => {
+      if (Gender[String(r.player.gender)] === Gender.FEMALE) {
+        const p = r.player;
+        r.player = r.partner;
+        r.partner = p;
+      }
+    });
   }
 }

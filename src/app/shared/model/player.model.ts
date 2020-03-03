@@ -1,4 +1,5 @@
-import {Gender} from './gender.enum';
+import {Gender} from '../../core/user/gender.enum';
+
 
 export interface IPlayer {
   id?: number;

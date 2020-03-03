@@ -8,13 +8,14 @@ import {environment} from '../../../environments/environment';
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
   private authServerUrl = environment.authServer;
+  private registrationServerUrl = environment.registrationServer;
 
   constructor(private localStorage: LocalStorageService, private sessionStorage: SessionStorageService) {
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (!request || !request.url || (request.url.startsWith('http')
-      && !(this.authServerUrl && request.url.startsWith(this.authServerUrl)))) {
+      && !(this.authServerUrl && (request.url.startsWith(this.authServerUrl) || request.url.startsWith(this.registrationServerUrl))))) {
       return next.handle(request);
     }
 

@@ -1,3 +1,5 @@
 export const environment = {
-  production: true
+  production: true,
+  authServer: 'https://batman-auth.herokuapp.com/api/',
+  registrationServer: 'https://batman-registration.herokuapp.com/api/'
 };
