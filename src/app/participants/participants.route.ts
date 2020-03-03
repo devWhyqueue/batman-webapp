@@ -5,6 +5,6 @@ export const PARTICIPANTS_ROUTE: Route = {
   path: 'participants',
   component: ParticipantsComponent,
   data: {
-    title: 'Starterlisten'
+    title: 'Teilnehmerlisten'
   }
 };

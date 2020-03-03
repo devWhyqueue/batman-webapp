@@ -1,59 +1,96 @@
-<h1>Starterlisten</h1>
+<h1>Teilnehmerlisten</h1>
 <hr/>
 
 <h2>Einzel</h2>
-<div class="form-inline mb-1">
-  <form class="form-group mr-auto">
-    <label for="singleDivisions" class="mr-1">Spielklasse:</label>
-    <select id="singleDivisions" class="form-control">
-      <option [value]="'A'" *ngFor="let division of []">{{'attribute'}}</option>
-    </select>
-  </form>
-  <form class="form-group">
+<form class="mb-1" [formGroup]="singleForm">
+  <div class="form-group">
     <div class="form-check form-check-inline">
-      <input class="form-check-input" type="radio" name="fieldTypeOptions" id="singleMaleRadio"
-             value="M" checked>
+      <input class="form-check-input" type="radio" name="fieldType" id="singleMaleRadio"
+             [value]="FieldType.MALE" formControlName="fieldType"
+             (change)="resetSingleDivisionName();singleFilter()">
       <label class="form-check-label" for="singleMaleRadio">Herren</label>
     </div>
     <div class="form-check form-check-inline">
-      <input class="form-check-input" type="radio" name="fieldTypeOptions" id="singleFemaleRadio"
-             value="F">
+      <input class="form-check-input" type="radio" name="fieldType" id="singleFemaleRadio"
+             [value]="FieldType.FEMALE" formControlName="fieldType"
+             (change)="resetSingleDivisionName();singleFilter()">
       <label class="form-check-label" for="singleFemaleRadio">Damen</label>
     </div>
-  </form>
+  </div>
+  <div class="form-inline form-group mr-3">
+    <label for="singleDivisions" class="mr-1">Spielklasse:</label>
+    <select id="singleDivisions" class="form-control" (change)="singleFilter()"
+            formControlName="divisionName">
+      <option *ngFor="let d of singleDivisions">{{d}}</option>
+    </select>
+  </div>
+</form>
+<hr align="left" class="w-25"/>
+<div class="d-flex flex-wrap">
+  <div class="d-flex flex-column m-3">
+    <h5>Starterliste</h5>
+    <app-table [headers]="singleHeaders" [items]="singleStarting"></app-table>
+  </div>
+  <div class="d-flex flex-column m-3">
+    <h5>Warteliste</h5>
+    <app-table [headers]="singleHeaders" [items]="singleWaiting"></app-table>
+  </div>
 </div>
-<app-table [headers]="singleHeaders" [items]="singles"></app-table>
 
 <h2 class="mt-3">Doppel</h2>
-<div class="form-inline mb-1">
-  <form class="form-group mr-auto">
-    <label for="doubleDivisions" class="mr-1">Spielklasse:</label>
-    <select id="doubleDivisions" class="form-control">
-      <option [value]="'A'" *ngFor="let division of []">{{'attribute'}}</option>
-    </select>
-  </form>
-  <form class="form-group">
+<form class="mb-1" [formGroup]="doubleForm">
+  <div class="form-group">
     <div class="form-check form-check-inline">
-      <input class="form-check-input" type="radio" name="fieldTypeOptions" id="doubleMaleRadio"
-             value="M" checked>
+      <input class="form-check-input" type="radio" name="fieldType" id="doubleMaleRadio"
+             [value]="FieldType.MALE" formControlName="fieldType"
+             (change)="resetDoubleDivisionName();doubleFilter()">
       <label class="form-check-label" for="doubleMaleRadio">Herren</label>
     </div>
     <div class="form-check form-check-inline">
-      <input class="form-check-input" type="radio" name="fieldTypeOptions" id="doubleFemaleRadio"
-             value="F">
+      <input class="form-check-input" type="radio" name="fieldType" id="doubleFemaleRadio"
+             [value]="FieldType.FEMALE" formControlName="fieldType"
+             (change)="resetDoubleDivisionName();doubleFilter()">
       <label class="form-check-label" for="doubleFemaleRadio">Damen</label>
     </div>
-  </form>
+  </div>
+  <div class="form-inline form-group mr-3">
+    <label for="doubleDivisions" class="mr-1">Spielklasse:</label>
+    <select id="doubleDivisions" class="form-control" (change)="doubleFilter()"
+            formControlName="divisionName">
+      <option *ngFor="let d of doubleDivisions">{{d}}</option>
+    </select>
+  </div>
+</form>
+<hr align="left" class="w-25"/>
+<div class="d-flex flex-wrap">
+  <div class="d-flex flex-column m-3">
+    <h5>Starterliste</h5>
+    <app-table [headers]="doubleHeaders" [items]="doubleStarting"></app-table>
+  </div>
+  <div class="d-flex flex-column m-3">
+    <h5>Warteliste</h5>
+    <app-table [headers]="doubleHeaders" [items]="doubleWaiting"></app-table>
+  </div>
 </div>
-<app-table [headers]="doubleHeaders" [items]="doubles"></app-table>
 
 <h2 class="mt-3">Mixed</h2>
-<div class="form-inline mb-1">
-  <form class="form-group mr-auto">
+<form class="form-inline mb-1" [formGroup]="mixedForm">
+  <div class="form-group">
     <label for="mixedDivisions" class="mr-1">Spielklasse:</label>
-    <select id="mixedDivisions" class="form-control">
-      <option [value]="'A'" *ngFor="let division of []">{{'attribute'}}</option>
+    <select id="mixedDivisions" class="form-control" (change)="mixedFilter()"
+            formControlName="divisionName">
+      <option *ngFor="let d of mixedDivisions">{{d}}</option>
     </select>
-  </form>
+  </div>
+</form>
+<hr align="left" class="w-25"/>
+<div class="d-flex flex-wrap">
+  <div class="d-flex flex-column m-3">
+    <h5>Starterliste</h5>
+    <app-table [headers]="mixedHeaders" [items]="mixedStarting"></app-table>
+  </div>
+  <div class="d-flex flex-column m-3">
+    <h5>Warteliste</h5>
+    <app-table [headers]="mixedHeaders" [items]="mixedWaiting"></app-table>
+  </div>
 </div>
-<app-table [headers]="mixedHeaders" [items]="mixeds"></app-table>
