@@ -1,15 +1,15 @@
 <h1>Anmeldestatus</h1>
 <hr/>
 
-<fieldset class="border p-2">
+<fieldset *ngIf="singleSteps.length" class="border p-2">
   <legend class="w-auto">Einzel</legend>
   <app-tracker [steps]="singleSteps"></app-tracker>
 </fieldset>
-<fieldset class="border p-2">
+<fieldset *ngIf="doubleSteps.length" class="border p-2">
   <legend class="w-auto">Doppel</legend>
   <app-tracker [steps]="doubleSteps"></app-tracker>
 </fieldset>
-<fieldset class="border p-2">
+<fieldset *ngIf="mixedSteps.length" class="border p-2">
   <legend class="w-auto">Mixed</legend>
   <app-tracker [steps]="mixedSteps"></app-tracker>
 </fieldset>

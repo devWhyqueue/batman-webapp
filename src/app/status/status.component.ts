@@ -36,20 +36,23 @@ export class StatusComponent implements OnInit {
 
   private initSingleSteps(): void {
     const singleRegistration = this.registrations
-        .find(r => r.tournamentDiscipline.discipline.disciplineType === DisciplineType[String(DisciplineType.SINGLE)]);
-    this.singleSteps = Step.toSteps(State[String(singleRegistration.state)], singleRegistration.tournamentDiscipline);
+      .find(r => r.tournamentDiscipline.discipline.disciplineType === DisciplineType[String(DisciplineType.SINGLE)]);
+    this.singleSteps = singleRegistration ?
+      Step.toSteps(State[String(singleRegistration.state)], singleRegistration.tournamentDiscipline) : [];
   }
 
   private initDoubleSteps(): void {
     const doubleRegistration = this.registrations
-        .find(r => r.tournamentDiscipline.discipline.disciplineType === DisciplineType[String(DisciplineType.DOUBLE)]);
-    this.doubleSteps = Step.toSteps(State[String(doubleRegistration.state)], doubleRegistration.tournamentDiscipline);
+      .find(r => r.tournamentDiscipline.discipline.disciplineType === DisciplineType[String(DisciplineType.DOUBLE)]);
+    this.doubleSteps = doubleRegistration
+      ? Step.toSteps(State[String(doubleRegistration.state)], doubleRegistration.tournamentDiscipline) : [];
   }
 
   private initMixedSteps(): void {
     const mixedRegistration = this.registrations
-        .find(r => r.tournamentDiscipline.discipline.disciplineType === DisciplineType[String(DisciplineType.MIXED)]);
-    this.mixedSteps = Step.toSteps(State[String(mixedRegistration.state)], mixedRegistration.tournamentDiscipline);
+      .find(r => r.tournamentDiscipline.discipline.disciplineType === DisciplineType[String(DisciplineType.MIXED)]);
+    this.mixedSteps = mixedRegistration
+      ? Step.toSteps(State[String(mixedRegistration.state)], mixedRegistration.tournamentDiscipline) : [];
   }
 
 }
