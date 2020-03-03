@@ -114,5 +114,4 @@ export class ParticipantsComponent implements OnInit {
         this.mixedForm.get(['divisionName']).value, FieldType.MIXED),
       [['player.firstName', 'player.lastName'], ['player.club'], ['partner.firstName', 'partner.lastName'], ['partner.club']]);
   }
-
 }
