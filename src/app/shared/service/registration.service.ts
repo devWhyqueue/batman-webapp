@@ -32,7 +32,7 @@ export class RegistrationService {
   }
 
   registerForMixed(registrationWithPartner: IRegistrationWithPartner): Observable<HttpResponse<IRegistration>> {
-    return this.http.post<IRegistration>(this.registrationServerUrl + 'tournament/current/registrations/self/disciplineType/MIXED',
+    return this.http.post<IRegistration>(this.registrationServerUrl + 'tournaments/current/registrations/self/disciplineType/MIXED',
       registrationWithPartner, {observe: 'response'});
   }
 }

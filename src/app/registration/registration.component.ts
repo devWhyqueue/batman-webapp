@@ -10,11 +10,10 @@ import {DisciplineType} from '../shared/model/discipline.enum';
 import {Gender} from '../core/user/gender.enum';
 import {FieldType} from '../shared/model/field.enum';
 import {ToastrService} from 'ngx-toastr';
-import {Division} from '../shared/model/division.model';
 import {RegistrationWithPartner} from '../shared/model/registration-with-partner.model';
-import {Player} from '../shared/model/player.model';
 import {RegistrationService} from '../shared/service/registration.service';
 
+// TODO: Club can contain numbers
 @Component({
   selector: 'app-registration',
   templateUrl: './registration.component.html',
@@ -33,17 +32,17 @@ export class RegistrationComponent implements OnInit {
   mixedDivisions = [];
 
   singleForm = this.fb.group({
-    divisionName: [undefined]
+    divisionName: [null, [Validators.required]]
   });
   doubleForm = this.fb.group({
-    divisionName: [undefined],
+    divisionName: [null, [Validators.required]],
     first: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50), Validators.pattern(XRegExp('^[\\pL ]+$'))]],
     last: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50), Validators.pattern(XRegExp('^[\\pL ]+$'))]],
     gender: [{value: null, disabled: true}, [Validators.required]],
     club: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50), Validators.pattern(XRegExp('^[\\pL ]+$'))]]
   });
   mixedForm = this.fb.group({
-    divisionName: [undefined],
+    divisionName: [null, [Validators.required]],
     first: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50), Validators.pattern(XRegExp('^[\\pL ]+$'))]],
     last: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50), Validators.pattern(XRegExp('^[\\pL ]+$'))]],
     gender: [{value: null, disabled: true}, [Validators.required]],
@@ -57,7 +56,8 @@ export class RegistrationComponent implements OnInit {
     this.userService.identity().subscribe(user => {
       this.user = user;
       this.doubleForm.get(['gender']).setValue(Gender[user.gender]);
-      this.mixedForm.get(['gender']).setValue(Gender[user.gender]);
+      const mixedGender = user.gender === Gender[String(Gender.MALE)] ? Gender.FEMALE : Gender.MALE;
+      this.mixedForm.get(['gender']).setValue(mixedGender);
 
       const fieldType = user.gender === Gender[String(Gender.MALE)] ? FieldType.MALE : FieldType.FEMALE;
       this.registrationService
@@ -74,7 +74,7 @@ export class RegistrationComponent implements OnInit {
 
   registerForSingle() {
     const divisionName = this.singleForm.get(['divisionName']).value;
-    this.registrationService.registerForSingle(new Division(divisionName)).subscribe(
+    this.registrationService.registerForSingle({name: divisionName}).subscribe(
       () => (this.success()),
       response => this.processError(response)
     );
@@ -87,7 +87,7 @@ export class RegistrationComponent implements OnInit {
     const gender = this.doubleForm.get(['gender']).value;
     const club = this.doubleForm.get(['club']).value;
     this.registrationService.registerForDouble(
-      new RegistrationWithPartner(new Player(firstName, lastName, gender, club), new Division(divisionName))).subscribe(
+      new RegistrationWithPartner({firstName, lastName, gender, club}, {name: divisionName})).subscribe(
       () => (this.success()),
       response => this.processError(response)
     );
@@ -100,7 +100,7 @@ export class RegistrationComponent implements OnInit {
     const gender = this.doubleForm.get(['gender']).value;
     const club = this.doubleForm.get(['club']).value;
     this.registrationService.registerForMixed(
-      new RegistrationWithPartner(new Player(firstName, lastName, gender, club), new Division(divisionName))).subscribe(
+      new RegistrationWithPartner({firstName, lastName, gender, club}, {name: divisionName})).subscribe(
       () => (this.success()),
       response => this.processError(response)
     );
