@@ -16,8 +16,8 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     if (!isDevMode()) {
       // Wake up Heroku Dynos
-      this.http.get(environment.registrationServer + 'api-docs').toPromise();
-      this.http.get(environment.authServer + 'api-docs').toPromise();
+      this.http.get(environment.registrationServer + '/v2/api-docs').toPromise();
+      this.http.get(environment.authServer + '/v2/api-docs').toPromise();
     }
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
