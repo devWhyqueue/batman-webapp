@@ -1,7 +1,7 @@
 import {Component, isDevMode, OnInit} from '@angular/core';
 import {ActivatedRouteSnapshot, NavigationEnd, Router} from '@angular/router';
 import {Title} from '@angular/platform-browser';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {environment} from '../environments/environment';
 
 @Component({
@@ -14,10 +14,10 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (!isDevMode()) {
+    if (isDevMode()) {
       // Wake up Heroku Dynos
-      this.http.get(environment.registrationServer + 'v2/api-docs').toPromise();
-      this.http.get(environment.authServer + 'v2/api-docs').toPromise();
+      this.http.get(environment.registrationServer).toPromise().catch(() => console.log('Called registration service.'));
+      this.http.get(environment.authServer).toPromise().catch(() => console.log('Called authentication service.'));
     }
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
