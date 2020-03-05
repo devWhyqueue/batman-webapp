@@ -20,14 +20,14 @@ export class HasAnyAuthorityDirective implements OnDestroy {
   private authorities: string[] = [];
   private authenticationSubscription?: Subscription;
 
-  constructor(private accountService: UserService, private templateRef: TemplateRef<any>, private viewContainerRef: ViewContainerRef) {}
+  constructor(private userService: UserService, private templateRef: TemplateRef<any>, private viewContainerRef: ViewContainerRef) {}
 
   @Input()
   set appHasAnyAuthority(value: string | string[]) {
     this.authorities = typeof value === 'string' ? [value] : value;
     this.updateView();
     // Get notified each time authentication state changes.
-    this.authenticationSubscription = this.accountService.getAuthenticationState().subscribe(() => this.updateView());
+    this.authenticationSubscription = this.userService.getAuthenticationState().subscribe(() => this.updateView());
   }
 
   ngOnDestroy(): void {
@@ -37,7 +37,7 @@ export class HasAnyAuthorityDirective implements OnDestroy {
   }
 
   private updateView(): void {
-    const hasAnyAuthority = this.accountService.hasAnyAuthority(this.authorities);
+    const hasAnyAuthority = this.userService.hasAnyAuthority(this.authorities);
     this.viewContainerRef.clear();
     if (hasAnyAuthority) {
       this.viewContainerRef.createEmbeddedView(this.templateRef);

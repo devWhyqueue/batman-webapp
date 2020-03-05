@@ -6,19 +6,6 @@
   <strong>Registrierung erfolgreich!</strong> Du kannst dich jetzt anmelden.
 </div>
 
-<div class="alert alert-danger" *ngIf="error">
-  <strong>Registrierung fehlgeschlagen!</strong> Versuche es später erneut.
-</div>
-
-<div class="alert alert-danger" *ngIf="errorEmailExists">
-  <strong>E-Mail-Adresse wird bereits verwendet!</strong> Bitte wähle eine andere.
-</div>
-
-<div class="alert alert-danger" *ngIf="doNotMatch">
-  Die Passwörter stimmen nicht überein!
-</div>
-
-
 <form name="form" role="form" (ngSubmit)="register()" [formGroup]="registerForm" *ngIf="!success">
 
   <div class="form-group">
@@ -98,7 +85,7 @@
         Der Verein darf nicht länger als 50 Zeichen lang sein!
       </small>
       <small class="form-text text-danger" *ngIf="registerForm.get('club')?.errors?.pattern">
-        Der Verein darf nur Buchstaben enthalten!
+        Der Verein darf nur Buchstaben und Zahlen enthalten!
       </small>
     </div>
   </div>
@@ -129,14 +116,14 @@
 
       <small class="form-text text-danger"
              *ngIf="registerForm.get('email')?.errors?.maxlength">
-        Die E-Mail-Adresse darf nicht länger als 100 Zeichen lang sein!
+        Die E-Mail-Adresse darf nicht länger als 50 Zeichen lang sein!
       </small>
     </div>
   </div>
 
   <div class="form-group">
     <label class="form-control-label" for="password">Passwort</label>
-    <input type="password" class="form-control" id="password" name="password" placeholder="*****"
+    <input type="password" class="form-control" id="password" name="password" placeholder="Dein Passwort"
            formControlName="password">
 
     <div
@@ -162,7 +149,7 @@
     <label class="form-control-label" for="confirmPassword"
            jhiTranslate="global.form.confirmpassword.label">Passwort bestätigen</label>
     <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
-           placeholder="*****"
+           placeholder="Passwort erneut eingeben"
            formControlName="confirmPassword">
 
     <div

@@ -9,8 +9,8 @@ import {HomeComponent} from './home/home.component';
 import {ParticipantsComponent} from './participants/participants.component';
 import {ProfileComponent} from './profile/profile.component';
 import {RegistrationComponent} from './registration/registration.component';
-import {StatusComponent} from './status/status.component';
-import {TrackerComponent} from './status/tracker/tracker.component';
+import {StateComponent} from './state/state.component';
+import {TrackerComponent} from './state/tracker/tracker.component';
 import {BrowserModule} from '@angular/platform-browser';
 import {SharedModule} from './shared/shared.module';
 import {CoreModule} from './core/core.module';
@@ -24,7 +24,7 @@ import {CoreModule} from './core/core.module';
     ParticipantsComponent,
     ProfileComponent,
     RegistrationComponent,
-    StatusComponent,
+    StateComponent,
     TrackerComponent
   ],
   imports: [

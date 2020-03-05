@@ -7,16 +7,16 @@ import {catchError, shareReplay, tap} from 'rxjs/operators';
 
 import {StateStorageService} from './state-storage.service';
 import {environment} from '../../../environments/environment';
-import {User} from '../user/user.model';
+import {IUser} from '../user/user.model';
 import {Authority} from '../user/authority.model';
 
 @Injectable({providedIn: 'root'})
 export class UserService {
   private authServerUrl = environment.authServer;
 
-  private userIdentity: User | null = null;
-  private authenticationState = new ReplaySubject<User | null>(1);
-  private accountCache$?: Observable<User | null>;
+  private userIdentity: IUser | null = null;
+  private authenticationState = new ReplaySubject<IUser | null>(1);
+  private userCache$?: Observable<IUser | null>;
 
   constructor(
     private sessionStorage: SessionStorageService,
@@ -26,15 +26,19 @@ export class UserService {
   ) {
   }
 
-  update(account: User): Observable<{}> {
-    return this.http.put(this.authServerUrl + 'users', account);
+  save(user: IUser): Observable<{}> {
+    return this.http.post(this.authServerUrl + 'users', user);
+  }
+
+  update(account: IUser): Observable<{}> {
+    return this.http.put(this.authServerUrl + 'users/self', account);
   }
 
   delete(): Observable<{}> {
     return this.http.delete(this.authServerUrl + 'users/self');
   }
 
-  authenticate(identity: User | null): void {
+  authenticate(identity: IUser | null): void {
     this.userIdentity = identity;
     this.authenticationState.next(this.userIdentity);
   }
@@ -51,35 +55,35 @@ export class UserService {
     });
   }
 
-  identity(force?: boolean): Observable<User | null> {
-    if (!this.accountCache$ || force || !this.isAuthenticated()) {
-      this.accountCache$ = this.fetch().pipe(
+  identity(force?: boolean): Observable<IUser | null> {
+    if (!this.userCache$ || force || !this.isAuthenticated()) {
+      this.userCache$ = this.fetch().pipe(
         catchError(() => {
           return of(null);
         }),
-        tap((account: User | null) => {
-          this.authenticate(account);
+        tap((user: IUser | null) => {
+          this.authenticate(user);
 
-          if (account) {
+          if (user) {
             this.navigateToStoredUrl();
           }
         }),
         shareReplay()
       );
     }
-    return this.accountCache$;
+    return this.userCache$;
   }
 
   isAuthenticated(): boolean {
     return this.userIdentity !== null;
   }
 
-  getAuthenticationState(): Observable<User | null> {
+  getAuthenticationState(): Observable<IUser | null> {
     return this.authenticationState.asObservable();
   }
 
-  private fetch(): Observable<User> {
-    return this.http.get<User>(this.authServerUrl + 'users/self');
+  private fetch(): Observable<IUser> {
+    return this.http.get<IUser>(this.authServerUrl + 'users/self');
   }
 
   private navigateToStoredUrl(): void {

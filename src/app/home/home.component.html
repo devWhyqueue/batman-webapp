@@ -1,12 +1,11 @@
 <div class="d-flex flex-column align-items-center text-center">
   <h1>Willkommen!</h1>
-  <div class="mb-3">
-    <h3>Benutze die Navigationsleiste, um dich für den {{ tournament.name }} an- oder
-      abzumelden.</h3>
-  </div>
-  <ngb-carousel class="w-50">
+  <p>Melde dich jetzt für den Stauseepokal 2020 an.</p>
+  <ngb-carousel class="col-lg-6 col-md-10 col-sm-12 mb-3">
     <ng-template ngbSlide *ngFor="let image of images">
-      <img [src]="image" alt="{{image}}" width="100%" height="100%"/>
+      <img class="img-fluid" [src]="image" alt="{{image}}"/>
     </ng-template>
   </ngb-carousel>
+  <p>Wir feiern 25-jähriges Jubiläum!</p>
+  <button type="button" class="btn btn-lg btn-primary" routerLink="/registration">Feier mit uns</button>
 </div>

@@ -1,26 +1,31 @@
 <h1>Turnieranmeldung</h1>
 <hr/>
 
-<div class="d-flex flex-wrap">
-  <form class="card m-3" (ngSubmit)="registerForDouble()" [formGroup]="doubleForm" *ngIf="showDoubleRegistration">
-    <h5 class="card-header">Doppel</h5>
-    <div class="card-body">
-      <div class="form-group">
-        <label for="doubleDivisions" class="mr-1">Spielklasse:</label>
-        <select id="doubleDivisions" class="form-control" formControlName="division">
-          <option [ngValue]="d" *ngFor="let d of doubleDivisions">{{d.name}}</option>
-        </select>
-        <div
-          *ngIf="doubleForm.get('division')!.invalid && (doubleForm.get('division')!.dirty || doubleForm.get('division')!.touched)">
-          <small class="form-text text-danger"
-                 *ngIf="doubleForm.get('division')?.errors?.required">
-            Spielklasse erforderlich!
-          </small>
+<div [ngSwitch]="!showSingleRegistration && !showDoubleRegistration && !showMixedRegistration">
+  <p *ngSwitchCase="true">Du hast dich in diesem Jahr bereits für alle Disziplinen angemeldet.</p>
+  <div class="d-flex flex-wrap" *ngSwitchCase="false">
+    <form class="card m-3" (ngSubmit)="registerForDouble()" [formGroup]="doubleForm" *ngIf="showDoubleRegistration">
+      <h5 class="card-header">Doppel</h5>
+      <div class="card-body">
+        <div class="form-group">
+          <label for="doubleDivisions" class="mr-1">Spielklasse:</label>
+          <select id="doubleDivisions" class="form-control" formControlName="division">
+            <option [ngValue]="d" *ngFor="let d of doubleDivisions">{{d.name}}</option>
+          </select>
+          <div
+            *ngIf="doubleForm.get('division')!.invalid && (doubleForm.get('division')!.dirty || doubleForm.get('division')!.touched)">
+            <small class="form-text text-danger"
+                   *ngIf="doubleForm.get('division')?.errors?.required">
+              Spielklasse erforderlich!
+            </small>
+          </div>
         </div>
-      </div>
 
         <fieldset class="border p-2">
-          <legend class="w-auto">Partner|in</legend>
+          <legend class="w-auto" [ngSwitch]="user.gender === Gender[Gender.MALE + '']">
+            <span *ngSwitchCase="true">Partner</span>
+            <span *ngSwitchCase="false">Partnerin</span>
+          </legend>
 
           <div class="form-group">
             <label class="form-control-label" for="first">Vorname</label>
@@ -31,8 +36,7 @@
               <small class="form-text text-danger" *ngIf="doubleForm.get('first')?.errors?.required">
                 Vorname erforderlich!
               </small>
-              <small class="form-text text-danger" *ngIf="doubleForm.get('first')?.errors?.minlength"
-                     jhiTranslate="register.messages.validate.login.minlength">
+              <small class="form-text text-danger" *ngIf="doubleForm.get('first')?.errors?.minlength">
                 Der Vorname muss mindestens ein Zeichen lang sein!
               </small>
               <small class="form-text text-danger" *ngIf="doubleForm.get('first')?.errors?.maxlength">
@@ -53,8 +57,7 @@
               <small class="form-text text-danger" *ngIf="doubleForm.get('last')?.errors?.required">
                 Nachname erforderlich!
               </small>
-              <small class="form-text text-danger" *ngIf="doubleForm.get('last')?.errors?.minlength"
-                     jhiTranslate="register.messages.validate.login.minlength">
+              <small class="form-text text-danger" *ngIf="doubleForm.get('last')?.errors?.minlength">
                 Der Nachname muss mindestens ein Zeichen lang sein!
               </small>
               <small class="form-text text-danger" *ngIf="doubleForm.get('last')?.errors?.maxlength">
@@ -91,152 +94,153 @@
               <small class="form-text text-danger" *ngIf="doubleForm.get('club')?.errors?.required">
                 Verein erforderlich!
               </small>
-              <small class="form-text text-danger" *ngIf="doubleForm.get('club')?.errors?.minlength"
-                     jhiTranslate="register.messages.validate.login.minlength">
+              <small class="form-text text-danger" *ngIf="doubleForm.get('club')?.errors?.minlength">
                 Der Verein muss mindestens fünf Zeichen lang sein!
               </small>
               <small class="form-text text-danger" *ngIf="doubleForm.get('club')?.errors?.maxlength">
                 Der Verein darf nicht länger als 50 Zeichen lang sein!
               </small>
               <small class="form-text text-danger" *ngIf="doubleForm.get('club')?.errors?.pattern">
-                Der Verein darf nur Buchstaben enthalten!
+                Der Verein darf nur Buchstaben und Zahlen enthalten!
               </small>
             </div>
           </div>
         </fieldset>
-    </div>
-    <div class="card-footer text-muted">
-      <button type="submit" class="btn btn-primary" [disabled]="doubleForm.invalid">Verbindlich anmelden</button>
-    </div>
-  </form>
-
-  <form class="card m-3" (ngSubmit)="registerForMixed()" [formGroup]="mixedForm" *ngIf="showMixedRegistration">
-    <h5 class="card-header">Mixed</h5>
-    <div class="card-body">
-      <div class="form-group">
-        <label for="mixedDivisions" class="mr-1">Spielklasse:</label>
-        <select id="mixedDivisions" class="form-control" formControlName="division">
-          <option [ngValue]="d" *ngFor="let d of mixedDivisions">{{d.name}}</option>
-        </select>
-        <div
-          *ngIf="mixedForm.get('division')!.invalid && (mixedForm.get('division')!.dirty || mixedForm.get('division')!.touched)">
-          <small class="form-text text-danger"
-                 *ngIf="mixedForm.get('division')?.errors?.required">
-            Spielklasse erforderlich!
-          </small>
-        </div>
       </div>
+      <div class="card-footer text-muted">
+        <button type="submit" class="btn btn-primary" [disabled]="doubleForm.invalid">Verbindlich anmelden</button>
+      </div>
+    </form>
 
-      <fieldset class="border p-2">
-        <legend class="w-auto">Partner|in</legend>
-
+    <form class="card m-3" (ngSubmit)="registerForMixed()" [formGroup]="mixedForm" *ngIf="showMixedRegistration">
+      <h5 class="card-header">Mixed</h5>
+      <div class="card-body">
         <div class="form-group">
-          <label class="form-control-label" for="firstMixed">Vorname</label>
-          <input type="text" class="form-control" id="firstMixed" name="first" placeholder="Vorname deines Partners"
-                 formControlName="first">
-          <div
-            *ngIf="mixedForm.get('first')!.invalid && (mixedForm.get('first')!.dirty || mixedForm.get('first')!.touched)">
-            <small class="form-text text-danger" *ngIf="mixedForm.get('first')?.errors?.required">
-              Vorname erforderlich!
-            </small>
-            <small class="form-text text-danger" *ngIf="mixedForm.get('first')?.errors?.minlength"
-                   jhiTranslate="register.messages.validate.login.minlength">
-              Der Vorname muss mindestens ein Zeichen lang sein!
-            </small>
-            <small class="form-text text-danger" *ngIf="mixedForm.get('first')?.errors?.maxlength">
-              Der Vorname darf nicht länger als 50 Zeichen lang sein!
-            </small>
-            <small class="form-text text-danger" *ngIf="mixedForm.get('first')?.errors?.pattern">
-              Der Vorname darf nur Buchstaben enthalten!
-            </small>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" for="lastMixed">Nachname</label>
-          <input type="text" class="form-control" id="lastMixed" name="last" placeholder="Nachname deines Partners"
-                 formControlName="last">
-          <div
-            *ngIf="mixedForm.get('last')!.invalid && (mixedForm.get('last')!.dirty || mixedForm.get('last')!.touched)">
-            <small class="form-text text-danger" *ngIf="mixedForm.get('last')?.errors?.required">
-              Nachname erforderlich!
-            </small>
-            <small class="form-text text-danger" *ngIf="mixedForm.get('last')?.errors?.minlength"
-                   jhiTranslate="register.messages.validate.login.minlength">
-              Der Nachname muss mindestens ein Zeichen lang sein!
-            </small>
-            <small class="form-text text-danger" *ngIf="mixedForm.get('last')?.errors?.maxlength">
-              Der Nachname darf nicht länger als 50 Zeichen lang sein!
-            </small>
-            <small class="form-text text-danger" *ngIf="mixedForm.get('last')?.errors?.pattern">
-              Der Nachname darf nur Buchstaben enthalten!
-            </small>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" for="mixedGender">Geschlecht</label>
-          <select class="form-control" id="mixedGender" name="gender"
-                  formControlName="gender" #gender>
-            <option [ngValue]="null" disabled>Dein Geschlecht</option>
-            <option [ngValue]="Gender.MALE">männlich</option>
-            <option [ngValue]="Gender.FEMALE">weiblich</option>
+          <label for="mixedDivisions" class="mr-1">Spielklasse:</label>
+          <select id="mixedDivisions" class="form-control" formControlName="division">
+            <option [ngValue]="d" *ngFor="let d of mixedDivisions">{{d.name}}</option>
           </select>
           <div
-            *ngIf="mixedForm.get('gender')!.invalid && (mixedForm.get('gender')!.dirty || mixedForm.get('gender')!.touched)">
-            <small class="form-text text-danger" *ngIf="mixedForm.get('gender')?.errors?.required">
-              Geschlecht erforderlich!
+            *ngIf="mixedForm.get('division')!.invalid && (mixedForm.get('division')!.dirty || mixedForm.get('division')!.touched)">
+            <small class="form-text text-danger"
+                   *ngIf="mixedForm.get('division')?.errors?.required">
+              Spielklasse erforderlich!
             </small>
           </div>
         </div>
 
-        <div class="form-group">
-          <label class="form-control-label" for="mixedClub">Verein</label>
-          <input type="text" class="form-control" id="mixedClub" name="club" placeholder="Verein deines Partners"
-                 formControlName="club" #club>
+        <fieldset class="border p-2">
+          <legend class="w-auto" [ngSwitch]="user.gender === Gender[Gender.MALE + '']">
+            <span *ngSwitchCase="true">Partnerin</span>
+            <span *ngSwitchCase="false">Partner</span>
+          </legend>
+
+          <div class="form-group">
+            <label class="form-control-label" for="firstMixed">Vorname</label>
+            <input type="text" class="form-control" id="firstMixed" name="first" placeholder="Vorname deines Partners"
+                   formControlName="first">
+            <div
+              *ngIf="mixedForm.get('first')!.invalid && (mixedForm.get('first')!.dirty || mixedForm.get('first')!.touched)">
+              <small class="form-text text-danger" *ngIf="mixedForm.get('first')?.errors?.required">
+                Vorname erforderlich!
+              </small>
+              <small class="form-text text-danger" *ngIf="mixedForm.get('first')?.errors?.minlength">
+                Der Vorname muss mindestens ein Zeichen lang sein!
+              </small>
+              <small class="form-text text-danger" *ngIf="mixedForm.get('first')?.errors?.maxlength">
+                Der Vorname darf nicht länger als 50 Zeichen lang sein!
+              </small>
+              <small class="form-text text-danger" *ngIf="mixedForm.get('first')?.errors?.pattern">
+                Der Vorname darf nur Buchstaben enthalten!
+              </small>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-control-label" for="lastMixed">Nachname</label>
+            <input type="text" class="form-control" id="lastMixed" name="last" placeholder="Nachname deines Partners"
+                   formControlName="last">
+            <div
+              *ngIf="mixedForm.get('last')!.invalid && (mixedForm.get('last')!.dirty || mixedForm.get('last')!.touched)">
+              <small class="form-text text-danger" *ngIf="mixedForm.get('last')?.errors?.required">
+                Nachname erforderlich!
+              </small>
+              <small class="form-text text-danger" *ngIf="mixedForm.get('last')?.errors?.minlength">
+                Der Nachname muss mindestens ein Zeichen lang sein!
+              </small>
+              <small class="form-text text-danger" *ngIf="mixedForm.get('last')?.errors?.maxlength">
+                Der Nachname darf nicht länger als 50 Zeichen lang sein!
+              </small>
+              <small class="form-text text-danger" *ngIf="mixedForm.get('last')?.errors?.pattern">
+                Der Nachname darf nur Buchstaben enthalten!
+              </small>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-control-label" for="mixedGender">Geschlecht</label>
+            <select class="form-control" id="mixedGender" name="gender"
+                    formControlName="gender" #gender>
+              <option [ngValue]="null" disabled>Dein Geschlecht</option>
+              <option [ngValue]="Gender.MALE">männlich</option>
+              <option [ngValue]="Gender.FEMALE">weiblich</option>
+            </select>
+            <div
+              *ngIf="mixedForm.get('gender')!.invalid && (mixedForm.get('gender')!.dirty || mixedForm.get('gender')!.touched)">
+              <small class="form-text text-danger" *ngIf="mixedForm.get('gender')?.errors?.required">
+                Geschlecht erforderlich!
+              </small>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-control-label" for="mixedClub">Verein</label>
+            <input type="text" class="form-control" id="mixedClub" name="club" placeholder="Verein deines Partners"
+                   formControlName="club" #club>
+            <div
+              *ngIf="mixedForm.get('club')!.invalid && (mixedForm.get('club')!.dirty || mixedForm.get('club')!.touched)">
+              <small class="form-text text-danger" *ngIf="mixedForm.get('club')?.errors?.required">
+                Verein erforderlich!
+              </small>
+              <small class="form-text text-danger" *ngIf="mixedForm.get('club')?.errors?.minlength">
+                Der Verein muss mindestens fünf Zeichen lang sein!
+              </small>
+              <small class="form-text text-danger" *ngIf="mixedForm.get('club')?.errors?.maxlength">
+                Der Verein darf nicht länger als 50 Zeichen lang sein!
+              </small>
+              <small class="form-text text-danger" *ngIf="mixedForm.get('club')?.errors?.pattern">
+                Der Verein darf nur Buchstaben und Zahlen enthalten!
+              </small>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+      <div class="card-footer text-muted">
+        <button type="submit" class="btn btn-primary" [disabled]="mixedForm.invalid">Verbindlich anmelden</button>
+      </div>
+    </form>
+
+    <form class="card m-3" [formGroup]="singleForm" (ngSubmit)="registerForSingle()" *ngIf="showSingleRegistration">
+      <h5 class="card-header">Einzel</h5>
+      <div class="card-body">
+        <div class="form-inline form-group">
+          <label for="singleDivisions" class="mr-1">Spielklasse:</label>
+          <select id="singleDivisions" class="form-control" formControlName="division">
+            <option [ngValue]="d" *ngFor="let d of singleDivisions">{{d.name}}</option>
+          </select>
           <div
-            *ngIf="mixedForm.get('club')!.invalid && (mixedForm.get('club')!.dirty || mixedForm.get('club')!.touched)">
-            <small class="form-text text-danger" *ngIf="mixedForm.get('club')?.errors?.required">
-              Verein erforderlich!
-            </small>
-            <small class="form-text text-danger" *ngIf="mixedForm.get('club')?.errors?.minlength"
-                   jhiTranslate="register.messages.validate.login.minlength">
-              Der Verein muss mindestens fünf Zeichen lang sein!
-            </small>
-            <small class="form-text text-danger" *ngIf="mixedForm.get('club')?.errors?.maxlength">
-              Der Verein darf nicht länger als 50 Zeichen lang sein!
-            </small>
-            <small class="form-text text-danger" *ngIf="mixedForm.get('club')?.errors?.pattern">
-              Der Verein darf nur Buchstaben enthalten!
+            *ngIf="singleForm.get('division')!.invalid && (singleForm.get('division')!.dirty || singleForm.get('division')!.touched)">
+            <small class="form-text text-danger"
+                   *ngIf="singleForm.get('division')?.errors?.required">
+              Spielklasse erforderlich!
             </small>
           </div>
-        </div>
-      </fieldset>
-    </div>
-    <div class="card-footer text-muted">
-      <button type="submit" class="btn btn-primary" [disabled]="mixedForm.invalid">Verbindlich anmelden</button>
-    </div>
-  </form>
-
-  <form class="card m-3" [formGroup]="singleForm" (ngSubmit)="registerForSingle()" *ngIf="showSingleRegistration">
-    <h5 class="card-header">Einzel</h5>
-    <div class="card-body">
-      <div class="form-inline form-group">
-        <label for="singleDivisions" class="mr-1">Spielklasse:</label>
-        <select id="singleDivisions" class="form-control" formControlName="division">
-          <option [ngValue]="d" *ngFor="let d of singleDivisions">{{d.name}}</option>
-        </select>
-        <div
-          *ngIf="singleForm.get('division')!.invalid && (singleForm.get('division')!.dirty || singleForm.get('division')!.touched)">
-          <small class="form-text text-danger"
-                 *ngIf="singleForm.get('division')?.errors?.required">
-            Spielklasse erforderlich!
-          </small>
         </div>
       </div>
-    </div>
-    <div class="card-footer text-muted">
-      <button type="submit" class="btn btn-primary" [disabled]="singleForm.invalid">Verbindlich anmelden</button>
-    </div>
-  </form>
+      <div class="card-footer text-muted">
+        <button type="submit" class="btn btn-primary" [disabled]="singleForm.invalid">Verbindlich anmelden</button>
+      </div>
+    </form>
+  </div>
 </div>
+

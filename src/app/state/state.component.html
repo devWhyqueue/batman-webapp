@@ -1,0 +1,20 @@
+<h1>Anmeldestatus</h1>
+<hr/>
+
+<div [ngSwitch]="!singleSteps.length && !doubleSteps.length && !mixedSteps.length">
+  <p *ngSwitchCase="true">Du bist noch für keine Disziplin angemeldet.</p>
+  <div *ngSwitchCase="false">
+    <fieldset *ngIf="singleSteps.length" class="border p-2">
+      <legend class="w-auto">Einzel</legend>
+      <app-tracker [steps]="singleSteps"></app-tracker>
+    </fieldset>
+    <fieldset *ngIf="doubleSteps.length" class="border p-2">
+      <legend class="w-auto">Doppel</legend>
+      <app-tracker [steps]="doubleSteps"></app-tracker>
+    </fieldset>
+    <fieldset *ngIf="mixedSteps.length" class="border p-2">
+      <legend class="w-auto">Mixed</legend>
+      <app-tracker [steps]="mixedSteps"></app-tracker>
+    </fieldset>
+  </div>
+</div>

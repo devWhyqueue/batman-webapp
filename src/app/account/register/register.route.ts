@@ -4,4 +4,7 @@ import {Route} from '@angular/router';
 export const registerRoute: Route = {
   path: 'register',
   component: RegisterComponent,
+  data: {
+    title: 'Konto anlegen'
+  }
 };

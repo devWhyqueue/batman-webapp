@@ -14,7 +14,6 @@ import {RegistrationService} from '../shared/service/registration.service';
 import {DivisionService} from './division.service';
 import {IDivision} from '../shared/model/division.model';
 
-// TODO: Club can contain numbers
 @Component({
   selector: 'app-registration',
   templateUrl: './registration.component.html',
@@ -23,7 +22,7 @@ import {IDivision} from '../shared/model/division.model';
 export class RegistrationComponent implements OnInit {
   Gender = Gender;
 
-  private user: IUser;
+  user: IUser;
 
   private registrations: IRegistration[];
 
@@ -43,14 +42,14 @@ export class RegistrationComponent implements OnInit {
     first: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50), Validators.pattern(XRegExp('^[\\pL ]+$'))]],
     last: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50), Validators.pattern(XRegExp('^[\\pL ]+$'))]],
     gender: [{value: null, disabled: true}, [Validators.required]],
-    club: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50), Validators.pattern(XRegExp('^[\\pL ]+$'))]]
+    club: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50), Validators.pattern(XRegExp('^[\\pL0-9 ]+$'))]]
   });
   mixedForm = this.fb.group({
     division: [null, [Validators.required]],
     first: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50), Validators.pattern(XRegExp('^[\\pL ]+$'))]],
     last: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50), Validators.pattern(XRegExp('^[\\pL ]+$'))]],
     gender: [{value: null, disabled: true}, [Validators.required]],
-    club: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50), Validators.pattern(XRegExp('^[\\pL ]+$'))]]
+    club: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50), Validators.pattern(XRegExp('^[\\pL0-9 ]+$'))]]
   });
 
   constructor(private registrationService: RegistrationService, private divisionService: DivisionService,
@@ -66,39 +65,39 @@ export class RegistrationComponent implements OnInit {
 
       const fieldType = user.gender === Gender[String(Gender.MALE)] ? FieldType.MALE : FieldType.FEMALE;
       this.divisionService
-      .findByDisciplineTypeAndFieldType(DisciplineType.SINGLE, fieldType)
-      .subscribe((res: HttpResponse<IDivision[]>) => {
-        this.singleDivisions = (res.body || []);
-        this.singleForm.get(['division']).setValue((res.body[0] || null));
-      });
+        .findByDisciplineTypeAndFieldType(DisciplineType.SINGLE, fieldType)
+        .subscribe((res: HttpResponse<IDivision[]>) => {
+          this.singleDivisions = (res.body || []);
+          this.singleForm.get(['division']).setValue((res.body[0] || null));
+        });
       this.divisionService
-      .findByDisciplineTypeAndFieldType(DisciplineType.DOUBLE, fieldType)
-      .subscribe((res: HttpResponse<IDivision[]>) => {
-        this.doubleDivisions = (res.body || []);
-        this.doubleForm.get(['division']).setValue((res.body[0] || null));
-      });
+        .findByDisciplineTypeAndFieldType(DisciplineType.DOUBLE, fieldType)
+        .subscribe((res: HttpResponse<IDivision[]>) => {
+          this.doubleDivisions = (res.body || []);
+          this.doubleForm.get(['division']).setValue((res.body[0] || null));
+        });
       this.divisionService
-      .findByDisciplineTypeAndFieldType(DisciplineType.MIXED, FieldType.MIXED)
-      .subscribe((res: HttpResponse<IDivision[]>) => {
-        this.mixedDivisions = (res.body || []);
-        this.mixedForm.get(['division']).setValue((res.body[0] || null));
-      });
+        .findByDisciplineTypeAndFieldType(DisciplineType.MIXED, FieldType.MIXED)
+        .subscribe((res: HttpResponse<IDivision[]>) => {
+          this.mixedDivisions = (res.body || []);
+          this.mixedForm.get(['division']).setValue((res.body[0] || null));
+        });
 
 
       this.registrationService
-      .getOwnCurrentRegistrations()
-      .subscribe((res: HttpResponse<IRegistration[]>) => {
-        this.registrations = (res.body || []);
-        this.showSingleRegistration = !this.isRegisteredForDisciplineType(DisciplineType.SINGLE);
-        this.showDoubleRegistration = !this.isRegisteredForDisciplineType(DisciplineType.DOUBLE);
-        this.showMixedRegistration = !this.isRegisteredForDisciplineType(DisciplineType.MIXED);
-      });
+        .getOwnCurrentRegistrations()
+        .subscribe((res: HttpResponse<IRegistration[]>) => {
+          this.registrations = (res.body || []);
+          this.showSingleRegistration = !this.isRegisteredForDisciplineType(DisciplineType.SINGLE);
+          this.showDoubleRegistration = !this.isRegisteredForDisciplineType(DisciplineType.DOUBLE);
+          this.showMixedRegistration = !this.isRegisteredForDisciplineType(DisciplineType.MIXED);
+        });
     });
   }
 
   private isRegisteredForDisciplineType(disciplineType: DisciplineType): boolean {
     return this.registrations
-    .filter(r => r.tournamentDiscipline.discipline.disciplineType === DisciplineType[String(disciplineType)])
+      .filter(r => r.tournamentDiscipline.discipline.disciplineType === DisciplineType[String(disciplineType)])
       .length > 0;
   }
 
@@ -137,7 +136,8 @@ export class RegistrationComponent implements OnInit {
   }
 
   private success() {
-    this.toastrService.success('Du hast dich erfolgreich registriert.', 'Erfolgreich registriert');
+    this.toastrService.success('Klicke jetzt in der Navigationsleiste auf Status, um den Stand deiner Registrierung zu prüfen.',
+      'Erfolgreich registriert');
   }
 
   private processError(response: HttpErrorResponse): void {
@@ -156,7 +156,8 @@ export class RegistrationComponent implements OnInit {
     } else if (response.status === 409) {
       this.toastrService.error('Du hast dich in diesem Jahr bereits registriert.', 'Bereits registriert');
     } else if (response.status === 404) {
-      this.toastrService.error('Die gewählte Disziplin steht nicht zur Verfügung.', 'Turnier oder Turnierdisziplin nicht gefunden');
+      this.toastrService.error('Die gewählte Disziplin steht nicht zur Verfügung.',
+        'Turnier oder Turnierdisziplin nicht gefunden');
     } else if (response.status === 503) {
       this.toastrService.error('Die Benutzerdaten konnten nicht abgerufen werden.', 'Service nicht erreichbar');
     } else {

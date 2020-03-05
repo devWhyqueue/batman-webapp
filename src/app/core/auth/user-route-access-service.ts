@@ -6,14 +6,16 @@ import { map } from 'rxjs/operators';
 import { StateStorageService } from './state-storage.service';
 import {LoginModalService} from '../login/login-modal.service';
 import {UserService} from './user.service';
+import {ToastrService} from 'ngx-toastr';
 
 @Injectable({ providedIn: 'root' })
 export class UserRouteAccessService implements CanActivate {
   constructor(
     private router: Router,
     private loginModalService: LoginModalService,
-    private accountService: UserService,
-    private stateStorageService: StateStorageService
+    private userService: UserService,
+    private stateStorageService: StateStorageService,
+    private toastrService: ToastrService
   ) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
@@ -25,21 +27,21 @@ export class UserRouteAccessService implements CanActivate {
   }
 
   checkLogin(authorities: string[], url: string): Observable<boolean> {
-    return this.accountService.identity().pipe(
-      map(account => {
+    return this.userService.identity().pipe(
+      map(user => {
         if (!authorities || authorities.length === 0) {
           return true;
         }
 
-        if (account) {
-          const hasAnyAuthority = this.accountService.hasAnyAuthority(authorities);
+        if (user) {
+          const hasAnyAuthority = this.userService.hasAnyAuthority(authorities);
           if (hasAnyAuthority) {
             return true;
           }
           if (isDevMode()) {
             console.error('User has not any of required authorities: ', authorities);
           }
-          this.router.navigate(['accessdenied']);
+          this.toastrService.error('Du hast nicht die nötigen Rechte, um darauf zuzugreifen.', 'Zugriff verweigert');
           return false;
         }
 

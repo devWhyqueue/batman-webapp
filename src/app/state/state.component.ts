@@ -8,10 +8,10 @@ import {DisciplineType} from '../shared/model/discipline.enum';
 
 @Component({
   selector: 'app-status',
-  templateUrl: './status.component.html',
-  styleUrls: ['./status.component.scss']
+  templateUrl: './state.component.html',
+  styleUrls: ['./state.component.scss']
 })
-export class StatusComponent implements OnInit {
+export class StateComponent implements OnInit {
 
   private registrations: IRegistration[];
 

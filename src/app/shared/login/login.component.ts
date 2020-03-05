@@ -34,15 +34,6 @@ export class LoginComponent implements AfterViewInit {
     }
   }
 
-  cancel(): void {
-    this.authenticationError = false;
-    this.loginForm.patchValue({
-      email: '',
-      password: ''
-    });
-    this.activeModal.dismiss('cancel');
-  }
-
   login(): void {
     this.loginService
     .login({

@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {User} from '../core/user/user.model';
+import {IUser} from '../core/user/user.model';
 import {FormBuilder, Validators} from '@angular/forms';
 import * as XRegExp from 'xregexp';
 import {UserService} from '../core/auth/user.service';
@@ -14,50 +14,48 @@ import {HttpErrorResponse} from '@angular/common/http';
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
-  account: User;
+  user: IUser;
+
   success = false;
-  error = false;
-  errorEmailExists = false;
   removalConfirmed = false;
+
   profileForm = this.fb.group({
-    email: [undefined, [Validators.required, Validators.minLength(5), Validators.maxLength(254), Validators.email]],
+    email: [undefined, [Validators.required, Validators.minLength(5), Validators.maxLength(50), Validators.email]],
     first: [undefined, [Validators.required, Validators.minLength(1), Validators.maxLength(50), Validators.pattern(XRegExp('^[\\pL ]+$'))]],
     last: [undefined, [Validators.required, Validators.minLength(1), Validators.maxLength(50), Validators.pattern(XRegExp('^[\\pL ]+$'))]],
-    club: [undefined, [Validators.required, Validators.minLength(5), Validators.maxLength(50), Validators.pattern(XRegExp('^[\\pL ]+$'))]],
+    club: [undefined, [Validators.required, Validators.minLength(5), Validators.maxLength(50), Validators.pattern(XRegExp('^[\\pL0-9 ]+$'))]],
   });
 
-  constructor(private fb: FormBuilder, private accountService: UserService, private toastrService: ToastrService,
+  constructor(private fb: FormBuilder, private userService: UserService, private toastrService: ToastrService,
               private loginService: LoginService, private router: Router) {
   }
 
   ngOnInit() {
-    this.accountService.identity().subscribe(account => {
-      if (account) {
+    this.userService.identity().subscribe(user => {
+      if (user) {
         this.profileForm.patchValue({
-          first: account.firstName,
-          last: account.lastName,
-          email: account.email,
-          club: account.club
+          first: user.firstName,
+          last: user.lastName,
+          email: user.email,
+          club: user.club
         });
 
-        this.account = account;
+        this.user = user;
       }
     });
   }
 
   update(): void {
-    this.error = false;
-    this.errorEmailExists = false;
     this.success = false;
 
-    this.account.firstName = this.profileForm.get('first').value;
-    this.account.lastName = this.profileForm.get('last').value;
-    this.account.email = this.profileForm.get('email').value;
-    this.account.club = this.profileForm.get('club').value;
+    this.user.firstName = this.profileForm.get('first').value;
+    this.user.lastName = this.profileForm.get('last').value;
+    this.user.email = this.profileForm.get('email').value;
+    this.user.club = this.profileForm.get('club').value;
 
-    this.accountService.update(this.account).subscribe(() => {
+    this.userService.update(this.user).subscribe(() => {
         this.success = true;
-        this.accountService.authenticate(this.account);
+        this.userService.authenticate(this.user);
       },
       response => this.processError(response));
   }
@@ -67,18 +65,18 @@ export class ProfileComponent implements OnInit {
   }
 
   delete(): void {
-    this.accountService.delete().subscribe(() => {
+    this.userService.delete().subscribe(() => {
       this.loginService.logout();
       this.router.navigate(['']);
-      this.toastrService.success('Dein Konto wurde erfolgreich gelöscht!');
+      this.toastrService.success('Dein Konto wurde erfolgreich gelöscht!', 'Konto entfernt');
     });
   }
 
   private processError(response: HttpErrorResponse): void {
     if (response.status === 409) {
-      this.errorEmailExists = true;
+      this.toastrService.error('Bitte wähle eine andere.', 'E-Mail-Adresse wird bereits verwendet');
     } else {
-      this.error = true;
+      this.toastrService.error('Versuche es später erneut.', 'Änderung fehlgeschlagen');
     }
   }
 

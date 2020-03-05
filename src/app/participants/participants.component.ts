@@ -37,15 +37,15 @@ export class ParticipantsComponent implements OnInit {
   mixedWaiting = [];
 
   singleForm = this.fb.group({
-    divisionName: [null],
+    divisionName: [''],
     fieldType: [FieldType.MALE],
   });
   doubleForm = this.fb.group({
-    divisionName: [null],
+    divisionName: [''],
     fieldType: [FieldType.MALE],
   });
   mixedForm = this.fb.group({
-    divisionName: [null],
+    divisionName: [''],
   });
 
   constructor(private registrationService: RegistrationService, private tableService: TableService, private fb: FormBuilder) {
@@ -81,7 +81,7 @@ export class ParticipantsComponent implements OnInit {
   }
 
   resetSingleDivisionName() {
-    this.singleForm.get(['divisionName']).setValue(undefined);
+    this.singleForm.get(['divisionName']).setValue('');
   }
 
   doubleFilter() {
@@ -102,7 +102,7 @@ export class ParticipantsComponent implements OnInit {
   }
 
   resetDoubleDivisionName() {
-    this.doubleForm.get(['divisionName']).setValue(undefined);
+    this.doubleForm.get(['divisionName']).setValue('');
   }
 
   mixedFilter() {

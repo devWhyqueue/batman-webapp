@@ -4,7 +4,7 @@ import {HOME_ROUTE} from './home/home.route';
 import {PARTICIPANTS_ROUTE} from './participants/participants.route';
 import {PROFILE_ROUTE} from './profile/profile.route';
 import {REGISTRATION_ROUTE} from './registration/registration.route';
-import {STATUS_ROUTE} from './status/status.route';
+import {STATUS_ROUTE} from './state/state.route';
 
 const routes: Routes = [HOME_ROUTE, PARTICIPANTS_ROUTE, PROFILE_ROUTE, REGISTRATION_ROUTE, STATUS_ROUTE];
 
