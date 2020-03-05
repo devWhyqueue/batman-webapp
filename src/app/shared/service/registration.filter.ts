@@ -14,26 +14,27 @@ export class RegistrationFilter {
   divisions(disciplineType: DisciplineType, fieldType: FieldType): string[] {
     return [...new Set(
       this.registrations
-      .filter(r => r.tournamentDiscipline.discipline.disciplineType === DisciplineType[String(disciplineType)])
-      .filter(r => r.tournamentDiscipline.discipline.fieldType === FieldType[String(fieldType)])
-      .map(r => r.tournamentDiscipline.discipline.division.name)
-      .sort((a, b) => a.localeCompare(b))
+        .filter(r => r.tournamentDiscipline.discipline.disciplineType === DisciplineType[String(disciplineType)])
+        .filter(r => r.tournamentDiscipline.discipline.fieldType === FieldType[String(fieldType)])
+        .filter(r => ![State.REFUND_PENDING, State.CANCELLED].includes(State[String(r.state)]))
+        .map(r => r.tournamentDiscipline.discipline.division.name)
+        .sort((a, b) => a.localeCompare(b))
     )];
   }
 
   starting(disciplineType: DisciplineType, divisionName: string, fieldType: FieldType): IRegistration[] {
     return this.registrations
-    .filter(r => r.tournamentDiscipline.discipline.disciplineType === DisciplineType[String(disciplineType)])
-    .filter(r => [State.PAYMENT_PENDING, State.CONFIRMED].includes(State[String(r.state)]))
-    .filter(r => r.tournamentDiscipline.discipline.division.name === divisionName)
-    .filter(r => r.tournamentDiscipline.discipline.fieldType === FieldType[String(fieldType)]);
+      .filter(r => r.tournamentDiscipline.discipline.disciplineType === DisciplineType[String(disciplineType)])
+      .filter(r => [State.PAYMENT_PENDING, State.CONFIRMED].includes(State[String(r.state)]))
+      .filter(r => r.tournamentDiscipline.discipline.division.name === divisionName)
+      .filter(r => r.tournamentDiscipline.discipline.fieldType === FieldType[String(fieldType)]);
   }
 
   waiting(disciplineType: DisciplineType, divisionName: string, fieldType: FieldType): IRegistration[] {
     return this.registrations
-    .filter(r => r.tournamentDiscipline.discipline.disciplineType === DisciplineType[String(disciplineType)])
-    .filter(r => State[String(r.state)] === State.WAITING)
-    .filter(r => r.tournamentDiscipline.discipline.division.name === divisionName)
-    .filter(r => r.tournamentDiscipline.discipline.fieldType === FieldType[String(fieldType)]);
+      .filter(r => r.tournamentDiscipline.discipline.disciplineType === DisciplineType[String(disciplineType)])
+      .filter(r => State[String(r.state)] === State.WAITING)
+      .filter(r => r.tournamentDiscipline.discipline.division.name === divisionName)
+      .filter(r => r.tournamentDiscipline.discipline.fieldType === FieldType[String(fieldType)]);
   }
 }
