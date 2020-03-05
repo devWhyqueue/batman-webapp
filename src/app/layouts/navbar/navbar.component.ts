@@ -10,6 +10,7 @@ import {UserService} from '../../core/auth/user.service';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
+  isCollapsed = true;
 
   constructor(private loginModalService: LoginModalService, private loginService: LoginService, private router: Router,
               private accountService: UserService) {

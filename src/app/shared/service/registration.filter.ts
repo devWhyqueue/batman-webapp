@@ -17,6 +17,7 @@ export class RegistrationFilter {
       .filter(r => r.tournamentDiscipline.discipline.disciplineType === DisciplineType[String(disciplineType)])
       .filter(r => r.tournamentDiscipline.discipline.fieldType === FieldType[String(fieldType)])
       .map(r => r.tournamentDiscipline.discipline.division.name)
+      .sort((a, b) => a.localeCompare(b))
     )];
   }
 

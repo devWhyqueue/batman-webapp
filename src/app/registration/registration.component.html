@@ -2,13 +2,13 @@
 <hr/>
 
 <div class="d-flex flex-wrap">
-  <form class="card m-3" (ngSubmit)="registerForDouble()" [formGroup]="doubleForm">
+  <form class="card m-3" (ngSubmit)="registerForDouble()" [formGroup]="doubleForm" *ngIf="showDoubleRegistration">
     <h5 class="card-header">Doppel</h5>
     <div class="card-body">
       <div class="form-group">
         <label for="doubleDivisions" class="mr-1">Spielklasse:</label>
         <select id="doubleDivisions" class="form-control" formControlName="division">
-          <option *ngFor="let d of doubleDivisions">{{d.name}}</option>
+          <option [ngValue]="d" *ngFor="let d of doubleDivisions">{{d.name}}</option>
         </select>
         <div
           *ngIf="doubleForm.get('division')!.invalid && (doubleForm.get('division')!.dirty || doubleForm.get('division')!.touched)">
@@ -110,13 +110,13 @@
     </div>
   </form>
 
-  <form class="card m-3" (ngSubmit)="registerForMixed()" [formGroup]="mixedForm">
+  <form class="card m-3" (ngSubmit)="registerForMixed()" [formGroup]="mixedForm" *ngIf="showMixedRegistration">
     <h5 class="card-header">Mixed</h5>
     <div class="card-body">
       <div class="form-group">
         <label for="mixedDivisions" class="mr-1">Spielklasse:</label>
         <select id="mixedDivisions" class="form-control" formControlName="division">
-          <option *ngFor="let d of mixedDivisions">{{d.name}}</option>
+          <option [ngValue]="d" *ngFor="let d of mixedDivisions">{{d.name}}</option>
         </select>
         <div
           *ngIf="mixedForm.get('division')!.invalid && (mixedForm.get('division')!.dirty || mixedForm.get('division')!.touched)">
@@ -218,13 +218,13 @@
     </div>
   </form>
 
-  <form class="card m-3" [formGroup]="singleForm" (ngSubmit)="registerForSingle()">
+  <form class="card m-3" [formGroup]="singleForm" (ngSubmit)="registerForSingle()" *ngIf="showSingleRegistration">
     <h5 class="card-header">Einzel</h5>
     <div class="card-body">
       <div class="form-inline form-group">
         <label for="singleDivisions" class="mr-1">Spielklasse:</label>
         <select id="singleDivisions" class="form-control" formControlName="division">
-          <option *ngFor="let d of singleDivisions">{{d.name}}</option>
+          <option [ngValue]="d" *ngFor="let d of singleDivisions">{{d.name}}</option>
         </select>
         <div
           *ngIf="singleForm.get('division')!.invalid && (singleForm.get('division')!.dirty || singleForm.get('division')!.touched)">

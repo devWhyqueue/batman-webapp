@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {IRegistration} from '../shared/model/registration.model';
 import {FormBuilder, Validators} from '@angular/forms';
 import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
-import {RegistrationFilter} from '../shared/service/registration.filter';
 import * as XRegExp from 'xregexp';
 import {UserService} from '../core/auth/user.service';
 import {IUser} from '../core/user/user.model';
@@ -27,6 +26,10 @@ export class RegistrationComponent implements OnInit {
   private user: IUser;
 
   private registrations: IRegistration[];
+
+  showSingleRegistration = false;
+  showDoubleRegistration = false;
+  showMixedRegistration = false;
 
   singleDivisions = [];
   doubleDivisions = [];
@@ -86,8 +89,17 @@ export class RegistrationComponent implements OnInit {
       .getOwnCurrentRegistrations()
       .subscribe((res: HttpResponse<IRegistration[]>) => {
         this.registrations = (res.body || []);
+        this.showSingleRegistration = !this.isRegisteredForDisciplineType(DisciplineType.SINGLE);
+        this.showDoubleRegistration = !this.isRegisteredForDisciplineType(DisciplineType.DOUBLE);
+        this.showMixedRegistration = !this.isRegisteredForDisciplineType(DisciplineType.MIXED);
       });
     });
+  }
+
+  private isRegisteredForDisciplineType(disciplineType: DisciplineType): boolean {
+    return this.registrations
+    .filter(r => r.tournamentDiscipline.discipline.disciplineType === DisciplineType[String(disciplineType)])
+      .length > 0;
   }
 
   registerForSingle() {
@@ -112,11 +124,11 @@ export class RegistrationComponent implements OnInit {
   }
 
   registerForMixed() {
-    const division = this.doubleForm.get(['division']).value;
-    const firstName = this.doubleForm.get(['first']).value;
-    const lastName = this.doubleForm.get(['last']).value;
-    const gender = this.doubleForm.get(['gender']).value;
-    const club = this.doubleForm.get(['club']).value;
+    const division = this.mixedForm.get(['division']).value;
+    const firstName = this.mixedForm.get(['first']).value;
+    const lastName = this.mixedForm.get(['last']).value;
+    const gender = this.mixedForm.get(['gender']).value;
+    const club = this.mixedForm.get(['club']).value;
     this.registrationService.registerForMixed(
       new RegistrationWithPartner({firstName, lastName, gender, club}, division)).subscribe(
       () => (this.success()),
@@ -151,5 +163,4 @@ export class RegistrationComponent implements OnInit {
       this.toastrService.error('Bitte versuche es später erneut.', 'Registrierung fehlgeschlagen');
     }
   }
-
 }
