@@ -1,9 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {IStep, Step} from '../shared/model/step.model';
+import {Step} from '../shared/model/step.model';
 import {RegistrationService} from '../shared/service/registration.service';
 import {IRegistration} from '../shared/model/registration.model';
 import {HttpResponse} from '@angular/common/http';
-import {RegistrationFilter} from '../participants/registration.filter';
 import {State} from '../shared/model/state.enum';
 import {DisciplineType} from '../shared/model/discipline.enum';
 

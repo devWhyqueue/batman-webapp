@@ -6,7 +6,7 @@ import {IRegistration} from '../shared/model/registration.model';
 import {TableService} from '../shared/table/table.service';
 import {FormBuilder} from '@angular/forms';
 import {FieldType} from '../shared/model/field.enum';
-import {RegistrationFilter} from './registration.filter';
+import {RegistrationFilter} from '../shared/service/registration.filter';
 import {Gender} from '../core/user/gender.enum';
 
 
@@ -37,15 +37,15 @@ export class ParticipantsComponent implements OnInit {
   mixedWaiting = [];
 
   singleForm = this.fb.group({
-    divisionName: [undefined],
+    divisionName: [null],
     fieldType: [FieldType.MALE],
   });
   doubleForm = this.fb.group({
-    divisionName: [undefined],
+    divisionName: [null],
     fieldType: [FieldType.MALE],
   });
   mixedForm = this.fb.group({
-    divisionName: [undefined],
+    divisionName: [null],
   });
 
   constructor(private registrationService: RegistrationService, private tableService: TableService, private fb: FormBuilder) {

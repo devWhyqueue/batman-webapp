@@ -1,7 +1,7 @@
-import {IRegistration} from '../shared/model/registration.model';
-import {DisciplineType} from '../shared/model/discipline.enum';
-import {FieldType} from '../shared/model/field.enum';
-import {State} from '../shared/model/state.enum';
+import {IRegistration} from '../model/registration.model';
+import {DisciplineType} from '../model/discipline.enum';
+import {FieldType} from '../model/field.enum';
+import {State} from '../model/state.enum';
 
 export class RegistrationFilter {
 
