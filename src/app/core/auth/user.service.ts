@@ -12,6 +12,7 @@ import {Authority} from '../user/authority.model';
 
 @Injectable({providedIn: 'root'})
 export class UserService {
+  private registrationServerUrl = environment.registrationServer;
   private authServerUrl = environment.authServer;
 
   private userIdentity: IUser | null = null;
@@ -35,7 +36,7 @@ export class UserService {
   }
 
   delete(): Observable<{}> {
-    return this.http.delete(this.authServerUrl + 'users/self');
+    return this.http.delete(this.registrationServerUrl + 'players/self');
   }
 
   authenticate(identity: IUser | null): void {
