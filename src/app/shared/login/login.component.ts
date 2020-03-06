@@ -45,7 +45,7 @@ export class LoginComponent implements AfterViewInit {
       () => {
         this.authenticationError = false;
         this.activeModal.close();
-        if (this.router.url === '/account/register' || this.router.url === '/account/activate') {
+        if (this.router.url === '/account/register' || this.router.url.startsWith('/account/activate')) {
           this.router.navigate(['']);
         }
         window.scroll(0, 0);

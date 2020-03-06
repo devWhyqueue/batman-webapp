@@ -66,10 +66,11 @@ export class ProfileComponent implements OnInit {
 
   delete(): void {
     this.userService.delete().subscribe(() => {
-      this.loginService.logout();
-      this.router.navigate(['']);
-      this.toastrService.success('Dein Konto wurde erfolgreich gelöscht!', 'Konto entfernt');
-    });
+        this.loginService.logout();
+        this.router.navigate(['']);
+        this.toastrService.success('Dein Konto wurde erfolgreich gelöscht!', 'Konto entfernt');
+      },
+      () => this.toastrService.error('Versuche es später erneut.', 'Löschen fehlgeschlagen'));
   }
 
   private processError(response: HttpErrorResponse): void {
