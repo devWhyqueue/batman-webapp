@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {Step} from '../shared/model/step.model';
 import {RegistrationService} from '../shared/service/registration.service';
 import {IRegistration} from '../shared/model/registration.model';
@@ -7,11 +7,13 @@ import {State} from '../shared/model/state.enum';
 import {DisciplineType} from '../shared/model/discipline.enum';
 
 @Component({
-  selector: 'app-status',
+  selector: 'app-state',
   templateUrl: './state.component.html',
   styleUrls: ['./state.component.scss']
 })
 export class StateComponent implements OnInit {
+
+  private screenWidth: number;
 
   private registrations: IRegistration[];
 
@@ -20,38 +22,48 @@ export class StateComponent implements OnInit {
   mixedSteps = [];
 
   constructor(private registrationService: RegistrationService) {
+    this.getScreenSize();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  private getScreenSize(event?) {
+    this.screenWidth = window.innerWidth;
+  }
+
+  private isMobile(): boolean {
+    return this.screenWidth < 576;
   }
 
   ngOnInit() {
     this.registrationService
-      .getOwnCurrentRegistrations()
-      .subscribe((res: HttpResponse<IRegistration[]>) => {
-        this.registrations = (res.body || []);
-        this.initSingleSteps();
-        this.initDoubleSteps();
-        this.initMixedSteps();
-      });
+    .getOwnCurrentRegistrations()
+    .subscribe((res: HttpResponse<IRegistration[]>) => {
+      this.registrations = (res.body || []);
+      this.initSingleSteps();
+      this.initDoubleSteps();
+      this.initMixedSteps();
+    });
   }
 
   private initSingleSteps(): void {
     const singleRegistration = this.registrations
-      .find(r => r.tournamentDiscipline.discipline.disciplineType === DisciplineType[String(DisciplineType.SINGLE)]);
+    .find(r => r.tournamentDiscipline.discipline.disciplineType === DisciplineType[String(DisciplineType.SINGLE)]);
     this.singleSteps = singleRegistration ?
-      Step.toSteps(State[String(singleRegistration.state)], singleRegistration.tournamentDiscipline) : [];
+      Step.toSteps(State[String(singleRegistration.state)], singleRegistration.tournamentDiscipline, this.isMobile()) : [];
   }
 
   private initDoubleSteps(): void {
     const doubleRegistration = this.registrations
-      .find(r => r.tournamentDiscipline.discipline.disciplineType === DisciplineType[String(DisciplineType.DOUBLE)]);
+    .find(r => r.tournamentDiscipline.discipline.disciplineType === DisciplineType[String(DisciplineType.DOUBLE)]);
     this.doubleSteps = doubleRegistration
-      ? Step.toSteps(State[String(doubleRegistration.state)], doubleRegistration.tournamentDiscipline) : [];
+      ? Step.toSteps(State[String(doubleRegistration.state)], doubleRegistration.tournamentDiscipline, this.isMobile()) : [];
   }
 
   private initMixedSteps(): void {
     const mixedRegistration = this.registrations
-      .find(r => r.tournamentDiscipline.discipline.disciplineType === DisciplineType[String(DisciplineType.MIXED)]);
+    .find(r => r.tournamentDiscipline.discipline.disciplineType === DisciplineType[String(DisciplineType.MIXED)]);
     this.mixedSteps = mixedRegistration
-      ? Step.toSteps(State[String(mixedRegistration.state)], mixedRegistration.tournamentDiscipline) : [];
+      ? Step.toSteps(State[String(mixedRegistration.state)], mixedRegistration.tournamentDiscipline, this.isMobile()) : [];
   }
 
 }

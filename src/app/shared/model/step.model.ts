@@ -13,7 +13,7 @@ export class Step implements IStep {
   constructor(public title?: string, public description?: string, public active?: boolean, public completed?: boolean) {
   }
 
-  static toSteps(state: State, tournamentDiscipline: ITournamentDiscipline): IStep[] {
+  static toSteps(state: State, tournamentDiscipline: ITournamentDiscipline, mobile: boolean): IStep[] {
     const steps = [];
     let activeStateReached = false;
     for (const s in State) {
@@ -26,10 +26,16 @@ export class Step implements IStep {
         } else if (!activeStateReached) {
           step.completed = true;
         }
-        steps.push(step);
+        if (!mobile || (mobile && step.active)) {
+          steps.push(step);
+        }
       }
     }
-    return [State.WAITING, State.PAYMENT_PENDING, State.CONFIRMED].includes(state) ?
-      steps.slice(0, 3) : steps.slice(3, 5);
+    if (mobile) {
+      return steps;
+    } else {
+      return [State.WAITING, State.PAYMENT_PENDING, State.CONFIRMED].includes(state) ?
+        steps.slice(0, 3) : steps.slice(3, 5);
+    }
   }
 }

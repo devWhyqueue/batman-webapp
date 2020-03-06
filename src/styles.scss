@@ -10,3 +10,15 @@ html, body {
 .toast-top-right {
   top: 90px;
 }
+
+@include media-breakpoint-down(sm) {
+  .w-100-sm {
+    width: 100% !important;
+  }
+}
+
+// Mobile fix
+app-participants, app-state{
+  width: 100% !important;
+}
+
