@@ -26,7 +26,8 @@ export class LoginComponent implements AfterViewInit {
     private router: Router,
     public activeModal: NgbActiveModal,
     private fb: FormBuilder
-  ) {}
+  ) {
+  }
 
   ngAfterViewInit(): void {
     if (this.email) {
@@ -47,6 +48,7 @@ export class LoginComponent implements AfterViewInit {
         if (this.router.url === '/account/register') {
           this.router.navigate(['']);
         }
+        window.scroll(0, 0);
       },
       () => (this.authenticationError = true)
     );

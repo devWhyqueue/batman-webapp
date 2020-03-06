@@ -3,7 +3,8 @@
 
 
 <div class="alert alert-success" *ngIf="success">
-  <strong>Registrierung erfolgreich!</strong> Du kannst dich jetzt anmelden.
+  <strong>Registrierung erfolgreich!</strong> Bitte bestätige nun dein Konto mithilfe des
+  Aktivierungslinks, den du per Mail bekommen hast.
 </div>
 
 <form name="form" role="form" (ngSubmit)="register()" [formGroup]="registerForm" *ngIf="!success">
@@ -123,7 +124,8 @@
 
   <div class="form-group">
     <label class="form-control-label" for="password">Passwort</label>
-    <input type="password" class="form-control" id="password" name="password" placeholder="Dein Passwort"
+    <input type="password" class="form-control" id="password" name="password"
+           placeholder="Dein Passwort"
            formControlName="password">
 
     <div

@@ -1,0 +1,12 @@
+<h1>Kontoaktivierung</h1>
+<hr/>
+
+<div class="alert alert-success" *ngIf="success">
+  <span class="mr-1">Dein Konto wurde erfolgreich aktiviert.</span>
+  <a class="alert-link cursor-pointer" (click)="login()">Jetzt anmelden</a>
+</div>
+
+<div class="alert alert-danger" *ngIf="error">
+  <strong>Dein Konto konnte nicht aktiviert werden.</strong> Bitte benutze die Registrierungsseite
+  um ein Konto zu erstellen.
+</div>
