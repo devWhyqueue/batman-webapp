@@ -6,13 +6,19 @@ import {registerLocaleData} from '@angular/common';
 import locale from '@angular/common/locales/de';
 import {AuthInterceptor} from '../blocks/interceptor/auth.interceptor';
 import {AuthExpiredInterceptor} from '../blocks/interceptor/auth-expired.interceptor';
+import {NgxSpinnerModule} from 'ngx-spinner';
+import {LoadingInterceptor} from '../blocks/interceptor/loading.interceptor';
 
 
 @NgModule({
   imports: [
     HttpClientModule,
+    NgxSpinnerModule,
     NgxWebstorageModule.forRoot(),
     ToastrModule.forRoot()
+  ],
+  exports: [
+    NgxSpinnerModule
   ],
   providers: [
     {
@@ -27,6 +33,11 @@ import {AuthExpiredInterceptor} from '../blocks/interceptor/auth-expired.interce
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthExpiredInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoadingInterceptor,
       multi: true
     },
   ]

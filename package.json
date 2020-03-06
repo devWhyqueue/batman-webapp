@@ -22,6 +22,7 @@
     "@angular/router": "~9.0.3",
     "@ng-bootstrap/ng-bootstrap": "^5.3.0",
     "bootstrap": "^4.4.1",
+    "ngx-spinner": "^8.1.0",
     "ngx-toastr": "^10.2.0",
     "ngx-webstorage": "^5.0.0",
     "progress-tracker": "^2.0.6",

@@ -30,8 +30,8 @@ import {CoreModule} from './core/core.module';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    SharedModule,
     CoreModule,
+    SharedModule,
     AppRoutingModule
   ],
   providers: [],
