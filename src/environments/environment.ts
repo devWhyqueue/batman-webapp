@@ -5,7 +5,8 @@
 export const environment = {
   production: false,
   authServer: 'http://localhost:8000/api/',
-  registrationServer: 'http://localhost:8010/api/'
+  registrationServer: 'http://localhost:8010/api/',
+  mailServer: 'http://localhost:8020/api/'
 };
 
 /*

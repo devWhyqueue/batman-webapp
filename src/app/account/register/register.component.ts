@@ -1,10 +1,11 @@
-import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, isDevMode, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, Validators} from '@angular/forms';
-import {HttpErrorResponse} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Gender} from '../../core/user/gender.enum';
 import * as XRegExp from 'xregexp';
 import {UserService} from '../../core/auth/user.service';
 import {ToastrService} from 'ngx-toastr';
+import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-register',
@@ -30,12 +31,16 @@ export class RegisterComponent implements AfterViewInit {
     club: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50), Validators.pattern(XRegExp('^[\\pL0-9 ]+$'))]],
   });
 
-  constructor(private fb: FormBuilder, private userService: UserService, private toastrService: ToastrService) {
+  constructor(private fb: FormBuilder, private userService: UserService, private toastrService: ToastrService, private http: HttpClient) {
   }
 
   ngAfterViewInit(): void {
     if (this.first) {
       this.first.nativeElement.focus();
+    }
+    if (!isDevMode()) {
+      // Wake up Heroku Dyno
+      this.http.get(environment.mailServer).toPromise().catch(() => console.log('Called mail service.'));
     }
   }
 
