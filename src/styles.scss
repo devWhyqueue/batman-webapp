@@ -15,10 +15,9 @@ html, body {
   .w-100-sm {
     width: 100% !important;
   }
-}
-
-// Mobile fix
-app-participants, app-state{
-  width: 100% !important;
+  // Mobile fix
+  app-participants, app-state{
+    width: 100% !important;
+  }
 }
 
