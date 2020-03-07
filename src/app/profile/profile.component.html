@@ -13,7 +13,7 @@
       <div class="form-group">
         <label class="form-control-label" for="first">Vorname</label>
         <input type="text" class="form-control" id="first" name="first" placeholder="Dein Vorname"
-               formControlName="first" #first>
+               formControlName="first" #first trim="blur">
         <div
           *ngIf="profileForm.get('first')!.invalid && (profileForm.get('first')!.dirty || profileForm.get('first')!.touched)">
           <small class="form-text text-danger" *ngIf="profileForm.get('first')?.errors?.required">
@@ -35,7 +35,7 @@
       <div class="form-group">
         <label class="form-control-label" for="last">Nachname</label>
         <input type="text" class="form-control" id="last" name="last" placeholder="Dein Nachname"
-               formControlName="last" #last>
+               formControlName="last" #last trim="blur">
         <div
           *ngIf="profileForm.get('last')!.invalid && (profileForm.get('last')!.dirty || profileForm.get('last')!.touched)">
           <small class="form-text text-danger" *ngIf="profileForm.get('last')?.errors?.required">
@@ -57,7 +57,7 @@
       <div class="form-group">
         <label class="form-control-label" for="club">Verein</label>
         <input type="text" class="form-control" id="club" name="club" placeholder="Dein Verein"
-               formControlName="club" #club>
+               formControlName="club" #club trim="blur">
         <div
           *ngIf="profileForm.get('club')!.invalid && (profileForm.get('club')!.dirty || profileForm.get('club')!.touched)">
           <small class="form-text text-danger" *ngIf="profileForm.get('club')?.errors?.required">
@@ -81,7 +81,7 @@
         <label class="form-control-label" for="email">E-Mail</label>
         <input type="email" class="form-control" id="email" name="email"
                placeholder="Deine E-Mail-Adresse"
-               formControlName="email">
+               formControlName="email" (change)="trimEmail()">
 
         <div
           *ngIf="profileForm.get('email')!.invalid && (profileForm.get('email')!.dirty || profileForm.get('email')!.touched)">

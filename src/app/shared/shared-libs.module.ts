@@ -3,6 +3,7 @@ import {CommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgModule} from '@angular/core';
 import {NgxSpinnerModule} from 'ngx-spinner';
+import {NgxTrimDirectiveModule} from 'ngx-trim-directive';
 
 @NgModule({
   exports: [
@@ -11,6 +12,7 @@ import {NgxSpinnerModule} from 'ngx-spinner';
     NgbModule,
     ReactiveFormsModule,
     NgxSpinnerModule,
+    NgxTrimDirectiveModule
   ]
 })
 export class SharedLibsModule {}

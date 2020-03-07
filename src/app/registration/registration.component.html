@@ -30,7 +30,7 @@
           <div class="form-group">
             <label class="form-control-label" for="first">Vorname</label>
             <input type="text" class="form-control" id="first" name="first" placeholder="Vorname deines Partners"
-                   formControlName="first">
+                   formControlName="first" trim="blur">
             <div
               *ngIf="doubleForm.get('first')!.invalid && (doubleForm.get('first')!.dirty || doubleForm.get('first')!.touched)">
               <small class="form-text text-danger" *ngIf="doubleForm.get('first')?.errors?.required">
@@ -51,7 +51,7 @@
           <div class="form-group">
             <label class="form-control-label" for="last">Nachname</label>
             <input type="text" class="form-control" id="last" name="last" placeholder="Nachname deines Partners"
-                   formControlName="last">
+                   formControlName="last" trim="blur">
             <div
               *ngIf="doubleForm.get('last')!.invalid && (doubleForm.get('last')!.dirty || doubleForm.get('last')!.touched)">
               <small class="form-text text-danger" *ngIf="doubleForm.get('last')?.errors?.required">
@@ -88,7 +88,7 @@
           <div class="form-group">
             <label class="form-control-label" for="club">Verein</label>
             <input type="text" class="form-control" id="club" name="club" placeholder="Verein deines Partners"
-                   formControlName="club" #club>
+                   formControlName="club" #club trim="blur">
             <div
               *ngIf="doubleForm.get('club')!.invalid && (doubleForm.get('club')!.dirty || doubleForm.get('club')!.touched)">
               <small class="form-text text-danger" *ngIf="doubleForm.get('club')?.errors?.required">
@@ -138,7 +138,7 @@
           <div class="form-group">
             <label class="form-control-label" for="firstMixed">Vorname</label>
             <input type="text" class="form-control" id="firstMixed" name="first" placeholder="Vorname deines Partners"
-                   formControlName="first">
+                   formControlName="first" trim="blur">
             <div
               *ngIf="mixedForm.get('first')!.invalid && (mixedForm.get('first')!.dirty || mixedForm.get('first')!.touched)">
               <small class="form-text text-danger" *ngIf="mixedForm.get('first')?.errors?.required">
@@ -159,7 +159,7 @@
           <div class="form-group">
             <label class="form-control-label" for="lastMixed">Nachname</label>
             <input type="text" class="form-control" id="lastMixed" name="last" placeholder="Nachname deines Partners"
-                   formControlName="last">
+                   formControlName="last" trim="blur">
             <div
               *ngIf="mixedForm.get('last')!.invalid && (mixedForm.get('last')!.dirty || mixedForm.get('last')!.touched)">
               <small class="form-text text-danger" *ngIf="mixedForm.get('last')?.errors?.required">
@@ -196,7 +196,7 @@
           <div class="form-group">
             <label class="form-control-label" for="mixedClub">Verein</label>
             <input type="text" class="form-control" id="mixedClub" name="club" placeholder="Verein deines Partners"
-                   formControlName="club" #club>
+                   formControlName="club" #club trim="blur">
             <div
               *ngIf="mixedForm.get('club')!.invalid && (mixedForm.get('club')!.dirty || mixedForm.get('club')!.touched)">
               <small class="form-text text-danger" *ngIf="mixedForm.get('club')?.errors?.required">

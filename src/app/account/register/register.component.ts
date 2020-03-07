@@ -39,6 +39,11 @@ export class RegisterComponent implements AfterViewInit {
     }
   }
 
+  trimEmail() {
+    const emailControl = this.registerForm.get(['email']);
+    emailControl.setValue(emailControl.value.trim());
+  }
+
   register(): void {
     const password = this.registerForm.get(['password']).value;
     if (password !== this.registerForm.get(['confirmPassword']).value) {
