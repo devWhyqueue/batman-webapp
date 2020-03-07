@@ -18,6 +18,7 @@ export class AppComponent implements OnInit {
       // Wake up Heroku Dynos
       this.http.get(environment.registrationServer).toPromise().catch(() => console.log('Called registration service.'));
       this.http.get(environment.authServer).toPromise().catch(() => console.log('Called authentication service.'));
+      this.http.get(environment.mailServer).toPromise().catch(() => console.log('Called mail service.'));
     }
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {

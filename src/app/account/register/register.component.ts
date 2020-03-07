@@ -1,11 +1,10 @@
-import {AfterViewInit, Component, ElementRef, isDevMode, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
 import {FormBuilder, Validators} from '@angular/forms';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Gender} from '../../core/user/gender.enum';
 import * as XRegExp from 'xregexp';
 import {UserService} from '../../core/auth/user.service';
 import {ToastrService} from 'ngx-toastr';
-import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-register',
@@ -37,10 +36,6 @@ export class RegisterComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     if (this.first) {
       this.first.nativeElement.focus();
-    }
-    if (!isDevMode()) {
-      // Wake up Heroku Dyno
-      this.http.get(environment.mailServer).toPromise().catch(() => console.log('Called mail service.'));
     }
   }
 
