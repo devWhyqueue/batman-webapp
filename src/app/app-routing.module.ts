@@ -15,7 +15,7 @@ const routes: Routes = [HOME_ROUTE, PARTICIPANTS_ROUTE, PROFILE_ROUTE, REGISTRAT
       path: 'account',
       loadChildren: () => import('./account/account.module').then(m => m.AccountModule)
     },
-  ])],
+  ], { scrollPositionRestoration: 'enabled' })],
   exports: [RouterModule]
 })
 export class AppRoutingModule {

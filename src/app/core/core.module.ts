@@ -6,20 +6,16 @@ import {registerLocaleData} from '@angular/common';
 import locale from '@angular/common/locales/de';
 import {AuthInterceptor} from '../blocks/interceptor/auth.interceptor';
 import {AuthExpiredInterceptor} from '../blocks/interceptor/auth-expired.interceptor';
-import {NgxSpinnerModule} from 'ngx-spinner';
 import {LoadingInterceptor} from '../blocks/interceptor/loading.interceptor';
 
 
 @NgModule({
   imports: [
     HttpClientModule,
-    NgxSpinnerModule,
     NgxWebstorageModule.forRoot(),
     ToastrModule.forRoot()
   ],
-  exports: [
-    NgxSpinnerModule
-  ],
+  exports: [],
   providers: [
     {
       provide: LOCALE_ID,

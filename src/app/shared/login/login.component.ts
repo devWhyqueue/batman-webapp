@@ -9,10 +9,7 @@ import {LoginService} from '../../core/login/login.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements AfterViewInit {
-  // @ts-ignore
-  @ViewChild('email')
-  email?: ElementRef;
+export class LoginComponent {
 
   authenticationError = false;
 
@@ -29,12 +26,6 @@ export class LoginComponent implements AfterViewInit {
   ) {
   }
 
-  ngAfterViewInit(): void {
-    if (this.email) {
-      this.email.nativeElement.focus();
-    }
-  }
-
   login(): void {
     this.loginService
     .login({
@@ -48,7 +39,6 @@ export class LoginComponent implements AfterViewInit {
         if (this.router.url === '/account/register' || this.router.url.startsWith('/account/activate')) {
           this.router.navigate(['']);
         }
-        window.scroll(0, 0);
       },
       () => (this.authenticationError = true)
     );
