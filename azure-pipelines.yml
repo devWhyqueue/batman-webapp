@@ -24,7 +24,7 @@ steps:
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: 'dist'
-    ArtifactName: 'drop'
+    ArtifactName: 'drop/dist'
     publishLocation: 'Container'
   displayName: 'Publish dist folder'
 
