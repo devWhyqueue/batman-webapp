@@ -16,7 +16,6 @@ import {HttpErrorResponse} from '@angular/common/http';
 export class ProfileComponent implements OnInit {
   user: IUser;
 
-  success = false;
   removalConfirmed = false;
 
   profileForm = this.fb.group({
@@ -46,18 +45,20 @@ export class ProfileComponent implements OnInit {
   }
 
   update(): void {
-    this.success = false;
-
     this.user.firstName = this.profileForm.get('first').value;
     this.user.lastName = this.profileForm.get('last').value;
     this.user.email = this.profileForm.get('email').value;
     this.user.club = this.profileForm.get('club').value;
 
     this.userService.update(this.user).subscribe(() => {
-        this.success = true;
+        this.success();
         this.userService.authenticate(this.user);
       },
       response => this.processError(response));
+  }
+
+  success() {
+    this.toastrService.success('Deine Änderungen wurden erfolgreich gespeichert.', 'Änderung erfolgreich');
   }
 
   confirmRemoval(): void {
