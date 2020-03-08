@@ -20,3 +20,17 @@ steps:
     npm install
     ng build --prod
   displayName: 'npm install and build'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: 'dist'
+    ArtifactName: 'drop/dist'
+    publishLocation: 'Container'
+  displayName: 'Publish dist folder'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: 'firebase.json'
+    ArtifactName: 'drop/firebase.json'
+    publishLocation: 'Container'
+  displayName: 'Publish firebase.json'
