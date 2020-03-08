@@ -45,11 +45,6 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  trimEmail() {
-    const emailControl = this.profileForm.get(['email']);
-    emailControl.setValue(emailControl.value.trim());
-  }
-
   update(): void {
     this.success = false;
 

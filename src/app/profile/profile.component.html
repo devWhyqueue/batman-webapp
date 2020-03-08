@@ -79,9 +79,9 @@
 
       <div class="form-group">
         <label class="form-control-label" for="email">E-Mail</label>
-        <input type="email" class="form-control" id="email" name="email"
+        <input type="text" class="form-control" id="email" name="email"
                placeholder="Deine E-Mail-Adresse"
-               formControlName="email" (input)="trimEmail()">
+               formControlName="email" trim>
 
         <div
           *ngIf="profileForm.get('email')!.invalid && (profileForm.get('email')!.dirty || profileForm.get('email')!.touched)">
