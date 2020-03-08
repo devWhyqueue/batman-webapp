@@ -44,6 +44,7 @@ export class RegisterComponent implements AfterViewInit {
     if (password !== this.registerForm.get(['confirmPassword']).value) {
       this.toastrService.error('Die Passwörter stimmen nicht überein.', 'Passwörter prüfen');
     } else {
+      window.scroll(0, 0);
       const firstName = this.registerForm.get(['first']).value;
       const lastName = this.registerForm.get(['last']).value;
       const gender = this.registerForm.get(['gender']).value;
