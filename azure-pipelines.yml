@@ -31,6 +31,6 @@ steps:
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: 'firebase.json'
-    ArtifactName: 'drop/firebase.json'
+    ArtifactName: 'drop'
     publishLocation: 'Container'
   displayName: 'Publish firebase.json'
