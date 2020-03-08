@@ -81,7 +81,7 @@
         <label class="form-control-label" for="email">E-Mail</label>
         <input type="email" class="form-control" id="email" name="email"
                placeholder="Deine E-Mail-Adresse"
-               formControlName="email" (change)="trimEmail()">
+               formControlName="email" (input)="trimEmail()">
 
         <div
           *ngIf="profileForm.get('email')!.invalid && (profileForm.get('email')!.dirty || profileForm.get('email')!.touched)">

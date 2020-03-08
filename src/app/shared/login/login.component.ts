@@ -26,6 +26,11 @@ export class LoginComponent {
   ) {
   }
 
+  trimEmail() {
+    const emailControl = this.loginForm.get(['email']);
+    emailControl.setValue(emailControl.value.trim());
+  }
+
   login(): void {
     this.loginService
     .login({
