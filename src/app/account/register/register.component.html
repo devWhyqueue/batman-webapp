@@ -14,7 +14,7 @@
   <div class="form-group">
     <label class="form-control-label" for="first">Vorname</label>
     <input type="text" class="form-control" id="first" name="first" placeholder="Dein Vorname"
-           formControlName="first" #first trim="blur">
+           formControlName="first" #first trim>
     <div
       *ngIf="registerForm.get('first')!.invalid && (registerForm.get('first')!.dirty || registerForm.get('first')!.touched)">
       <small class="form-text text-danger" *ngIf="registerForm.get('first')?.errors?.required">
@@ -36,7 +36,7 @@
   <div class="form-group">
     <label class="form-control-label" for="last">Nachname</label>
     <input type="text" class="form-control" id="last" name="last" placeholder="Dein Nachname"
-           formControlName="last" #last trim="blur">
+           formControlName="last" #last trim>
     <div
       *ngIf="registerForm.get('last')!.invalid && (registerForm.get('last')!.dirty || registerForm.get('last')!.touched)">
       <small class="form-text text-danger" *ngIf="registerForm.get('last')?.errors?.required">

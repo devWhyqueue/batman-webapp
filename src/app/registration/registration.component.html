@@ -30,7 +30,7 @@
           <div class="form-group">
             <label class="form-control-label" for="first">Vorname</label>
             <input type="text" class="form-control" id="first" name="first" placeholder="Vorname deines Partners"
-                   formControlName="first" trim="blur">
+                   formControlName="first" trim>
             <div
               *ngIf="doubleForm.get('first')!.invalid && (doubleForm.get('first')!.dirty || doubleForm.get('first')!.touched)">
               <small class="form-text text-danger" *ngIf="doubleForm.get('first')?.errors?.required">
@@ -51,7 +51,7 @@
           <div class="form-group">
             <label class="form-control-label" for="last">Nachname</label>
             <input type="text" class="form-control" id="last" name="last" placeholder="Nachname deines Partners"
-                   formControlName="last" trim="blur">
+                   formControlName="last" trim>
             <div
               *ngIf="doubleForm.get('last')!.invalid && (doubleForm.get('last')!.dirty || doubleForm.get('last')!.touched)">
               <small class="form-text text-danger" *ngIf="doubleForm.get('last')?.errors?.required">
@@ -138,7 +138,7 @@
           <div class="form-group">
             <label class="form-control-label" for="firstMixed">Vorname</label>
             <input type="text" class="form-control" id="firstMixed" name="first" placeholder="Vorname deines Partners"
-                   formControlName="first" trim="blur">
+                   formControlName="first" trim>
             <div
               *ngIf="mixedForm.get('first')!.invalid && (mixedForm.get('first')!.dirty || mixedForm.get('first')!.touched)">
               <small class="form-text text-danger" *ngIf="mixedForm.get('first')?.errors?.required">
@@ -159,7 +159,7 @@
           <div class="form-group">
             <label class="form-control-label" for="lastMixed">Nachname</label>
             <input type="text" class="form-control" id="lastMixed" name="last" placeholder="Nachname deines Partners"
-                   formControlName="last" trim="blur">
+                   formControlName="last" trim>
             <div
               *ngIf="mixedForm.get('last')!.invalid && (mixedForm.get('last')!.dirty || mixedForm.get('last')!.touched)">
               <small class="form-text text-danger" *ngIf="mixedForm.get('last')?.errors?.required">

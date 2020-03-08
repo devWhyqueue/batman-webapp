@@ -13,7 +13,7 @@
       <div class="form-group">
         <label class="form-control-label" for="first">Vorname</label>
         <input type="text" class="form-control" id="first" name="first" placeholder="Dein Vorname"
-               formControlName="first" #first trim="blur">
+               formControlName="first" #first trim>
         <div
           *ngIf="profileForm.get('first')!.invalid && (profileForm.get('first')!.dirty || profileForm.get('first')!.touched)">
           <small class="form-text text-danger" *ngIf="profileForm.get('first')?.errors?.required">
@@ -35,7 +35,7 @@
       <div class="form-group">
         <label class="form-control-label" for="last">Nachname</label>
         <input type="text" class="form-control" id="last" name="last" placeholder="Dein Nachname"
-               formControlName="last" #last trim="blur">
+               formControlName="last" #last trim>
         <div
           *ngIf="profileForm.get('last')!.invalid && (profileForm.get('last')!.dirty || profileForm.get('last')!.touched)">
           <small class="form-text text-danger" *ngIf="profileForm.get('last')?.errors?.required">
