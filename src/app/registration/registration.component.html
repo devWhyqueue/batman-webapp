@@ -1,246 +1,452 @@
 <h1>Turnieranmeldung</h1>
 <hr/>
 
-<div [ngSwitch]="!showSingleRegistration && !showDoubleRegistration && !showMixedRegistration">
-  <p *ngSwitchCase="true">Du hast dich in diesem Jahr bereits für alle Disziplinen angemeldet.</p>
-  <div class="d-flex flex-wrap" *ngSwitchCase="false">
-    <form class="card m-3" (ngSubmit)="registerForDouble()" [formGroup]="doubleForm" *ngIf="showDoubleRegistration">
-      <h5 class="card-header">Doppel</h5>
-      <div class="card-body">
-        <div class="form-group">
-          <label for="doubleDivisions" class="mr-1">Spielklasse:</label>
-          <select id="doubleDivisions" class="form-control" formControlName="division">
-            <option [ngValue]="d" *ngFor="let d of doubleDivisions">{{d.name}}</option>
-          </select>
-          <div
-            *ngIf="doubleForm.get('division')!.invalid && (doubleForm.get('division')!.dirty || doubleForm.get('division')!.touched)">
-            <small class="form-text text-danger"
-                   *ngIf="doubleForm.get('division')?.errors?.required">
-              Spielklasse erforderlich!
-            </small>
-          </div>
+<div class="d-flex flex-wrap">
+  <form class="card m-3" (ngSubmit)="registerForDouble()" [formGroup]="doubleForm">
+    <h5 class="card-header">Doppel</h5>
+    <div class="card-body">
+      <div class="form-group">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="fieldType" id="doubleMaleRadio"
+                 [value]="FieldType.MALE" formControlName="fieldType"
+                 (change)="resetDoubleDivisionName()">
+          <label class="form-check-label" for="doubleMaleRadio">Herren</label>
         </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="fieldType" id="doubleFemaleRadio"
+                 [value]="FieldType.FEMALE" formControlName="fieldType"
+                 (change)="resetDoubleDivisionName()">
+          <label class="form-check-label" for="doubleFemaleRadio">Damen</label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="doubleDivisions" class="mr-1">Spielklasse:</label>
+        <select id="doubleDivisions" class="form-control" formControlName="division">
+          <option [ngValue]="d" *ngFor="let d of doubleDivisions">{{d.name}}</option>
+        </select>
+        <div
+          *ngIf="doubleForm.get('division')!.invalid && (doubleForm.get('division')!.dirty || doubleForm.get('division')!.touched)">
+          <small class="form-text text-danger"
+                 *ngIf="doubleForm.get('division')?.errors?.required">
+            Spielklasse erforderlich!
+          </small>
+        </div>
+      </div>
 
+      <div class="d-flex flex-wrap">
         <fieldset class="border p-2">
-          <legend class="w-auto" [ngSwitch]="user.gender === Gender[Gender.MALE + '']">
-            <span *ngSwitchCase="true">Partner</span>
-            <span *ngSwitchCase="false">Partnerin</span>
+          <legend class="w-auto" [ngSwitch]="doubleFieldType() === FieldType.MALE">
+            <span *ngSwitchCase="true">Spieler</span>
+            <span *ngSwitchCase="false">Spielerin</span>
           </legend>
 
           <div class="form-group">
-            <label class="form-control-label" for="first">Vorname</label>
-            <input type="text" class="form-control" id="first" name="first" placeholder="Vorname deines Partners"
-                   formControlName="first" trim>
+            <label class="form-control-label" for="first1">Vorname</label>
+            <input type="text" class="form-control" id="first1" name="first1"
+                   formControlName="first1" trim>
             <div
-              *ngIf="doubleForm.get('first')!.invalid && (doubleForm.get('first')!.dirty || doubleForm.get('first')!.touched)">
-              <small class="form-text text-danger" *ngIf="doubleForm.get('first')?.errors?.required">
+              *ngIf="doubleForm.get('first1')!.invalid && (doubleForm.get('first1')!.dirty || doubleForm.get('first1')!.touched)">
+              <small class="form-text text-danger" *ngIf="doubleForm.get('first1')?.errors?.required">
                 Vorname erforderlich!
               </small>
-              <small class="form-text text-danger" *ngIf="doubleForm.get('first')?.errors?.minlength">
+              <small class="form-text text-danger" *ngIf="doubleForm.get('first1')?.errors?.minlength">
                 Der Vorname muss mindestens ein Zeichen lang sein!
               </small>
-              <small class="form-text text-danger" *ngIf="doubleForm.get('first')?.errors?.maxlength">
+              <small class="form-text text-danger" *ngIf="doubleForm.get('first1')?.errors?.maxlength">
                 Der Vorname darf nicht länger als 50 Zeichen lang sein!
               </small>
-              <small class="form-text text-danger" *ngIf="doubleForm.get('first')?.errors?.pattern">
+              <small class="form-text text-danger" *ngIf="doubleForm.get('first1')?.errors?.pattern">
                 Der Vorname darf nur Buchstaben enthalten!
               </small>
             </div>
           </div>
 
           <div class="form-group">
-            <label class="form-control-label" for="last">Nachname</label>
-            <input type="text" class="form-control" id="last" name="last" placeholder="Nachname deines Partners"
-                   formControlName="last" trim>
+            <label class="form-control-label" for="last1">Nachname</label>
+            <input type="text" class="form-control" id="last1" name="last1"
+                   formControlName="last1" trim>
             <div
-              *ngIf="doubleForm.get('last')!.invalid && (doubleForm.get('last')!.dirty || doubleForm.get('last')!.touched)">
-              <small class="form-text text-danger" *ngIf="doubleForm.get('last')?.errors?.required">
+              *ngIf="doubleForm.get('last1')!.invalid && (doubleForm.get('last1')!.dirty || doubleForm.get('last1')!.touched)">
+              <small class="form-text text-danger" *ngIf="doubleForm.get('last1')?.errors?.required">
                 Nachname erforderlich!
               </small>
-              <small class="form-text text-danger" *ngIf="doubleForm.get('last')?.errors?.minlength">
+              <small class="form-text text-danger" *ngIf="doubleForm.get('last1')?.errors?.minlength">
                 Der Nachname muss mindestens ein Zeichen lang sein!
               </small>
-              <small class="form-text text-danger" *ngIf="doubleForm.get('last')?.errors?.maxlength">
+              <small class="form-text text-danger" *ngIf="doubleForm.get('last1')?.errors?.maxlength">
                 Der Nachname darf nicht länger als 50 Zeichen lang sein!
               </small>
-              <small class="form-text text-danger" *ngIf="doubleForm.get('last')?.errors?.pattern">
+              <small class="form-text text-danger" *ngIf="doubleForm.get('last1')?.errors?.pattern">
                 Der Nachname darf nur Buchstaben enthalten!
               </small>
             </div>
           </div>
 
           <div class="form-group">
-            <label class="form-control-label" for="gender">Geschlecht</label>
-            <select class="form-control" id="gender" name="gender"
-                    formControlName="gender" #gender>
-              <option [ngValue]="null" disabled>Dein Geschlecht</option>
-              <option [ngValue]="Gender.MALE">männlich</option>
-              <option [ngValue]="Gender.FEMALE">weiblich</option>
-            </select>
+            <label class="form-control-label" for="club1">Verein</label>
+            <input type="text" class="form-control" id="club1" name="club1"
+                   formControlName="club1" #club1 trim="blur">
             <div
-              *ngIf="doubleForm.get('gender')!.invalid && (doubleForm.get('gender')!.dirty || doubleForm.get('gender')!.touched)">
-              <small class="form-text text-danger" *ngIf="doubleForm.get('gender')?.errors?.required">
-                Geschlecht erforderlich!
+              *ngIf="doubleForm.get('club1')!.invalid && (doubleForm.get('club1')!.dirty || doubleForm.get('club1')!.touched)">
+              <small class="form-text text-danger" *ngIf="doubleForm.get('club1')?.errors?.required">
+                Verein erforderlich!
+              </small>
+              <small class="form-text text-danger" *ngIf="doubleForm.get('club1')?.errors?.minlength">
+                Der Verein muss mindestens fünf Zeichen lang sein!
+              </small>
+              <small class="form-text text-danger" *ngIf="doubleForm.get('club1')?.errors?.maxlength">
+                Der Verein darf nicht länger als 50 Zeichen lang sein!
+              </small>
+              <small class="form-text text-danger" *ngIf="doubleForm.get('club1')?.errors?.pattern">
+                Der Verein darf nur Buchstaben und Zahlen enthalten!
+              </small>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="border p-2">
+          <legend class="w-auto" [ngSwitch]="doubleFieldType() === FieldType.MALE">
+            <span *ngSwitchCase="true">Partner</span>
+            <span *ngSwitchCase="false">Partnerin</span>
+          </legend>
+
+          <div class="form-group">
+            <label class="form-control-label" for="first2">Vorname</label>
+            <input type="text" class="form-control" id="first2" name="first2"
+                   formControlName="first2" trim>
+            <div
+              *ngIf="doubleForm.get('first2')!.invalid && (doubleForm.get('first2')!.dirty || doubleForm.get('first2')!.touched)">
+              <small class="form-text text-danger" *ngIf="doubleForm.get('first2')?.errors?.required">
+                Vorname erforderlich!
+              </small>
+              <small class="form-text text-danger" *ngIf="doubleForm.get('first2')?.errors?.minlength">
+                Der Vorname muss mindestens ein Zeichen lang sein!
+              </small>
+              <small class="form-text text-danger" *ngIf="doubleForm.get('first2')?.errors?.maxlength">
+                Der Vorname darf nicht länger als 50 Zeichen lang sein!
+              </small>
+              <small class="form-text text-danger" *ngIf="doubleForm.get('first2')?.errors?.pattern">
+                Der Vorname darf nur Buchstaben enthalten!
               </small>
             </div>
           </div>
 
           <div class="form-group">
-            <label class="form-control-label" for="club">Verein</label>
-            <input type="text" class="form-control" id="club" name="club" placeholder="Verein deines Partners"
-                   formControlName="club" #club trim="blur">
+            <label class="form-control-label" for="last2">Nachname</label>
+            <input type="text" class="form-control" id="last2" name="last2"
+                   formControlName="last2" trim>
             <div
-              *ngIf="doubleForm.get('club')!.invalid && (doubleForm.get('club')!.dirty || doubleForm.get('club')!.touched)">
-              <small class="form-text text-danger" *ngIf="doubleForm.get('club')?.errors?.required">
+              *ngIf="doubleForm.get('last2')!.invalid && (doubleForm.get('last2')!.dirty || doubleForm.get('last2')!.touched)">
+              <small class="form-text text-danger" *ngIf="doubleForm.get('last2')?.errors?.required">
+                Nachname erforderlich!
+              </small>
+              <small class="form-text text-danger" *ngIf="doubleForm.get('last2')?.errors?.minlength">
+                Der Nachname muss mindestens ein Zeichen lang sein!
+              </small>
+              <small class="form-text text-danger" *ngIf="doubleForm.get('last2')?.errors?.maxlength">
+                Der Nachname darf nicht länger als 50 Zeichen lang sein!
+              </small>
+              <small class="form-text text-danger" *ngIf="doubleForm.get('last2')?.errors?.pattern">
+                Der Nachname darf nur Buchstaben enthalten!
+              </small>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-control-label" for="club2">Verein</label>
+            <input type="text" class="form-control" id="club2" name="club2"
+                   formControlName="club2" #club2 trim="blur">
+            <div
+              *ngIf="doubleForm.get('club2')!.invalid && (doubleForm.get('club2')!.dirty || doubleForm.get('club2')!.touched)">
+              <small class="form-text text-danger" *ngIf="doubleForm.get('club2')?.errors?.required">
                 Verein erforderlich!
               </small>
-              <small class="form-text text-danger" *ngIf="doubleForm.get('club')?.errors?.minlength">
+              <small class="form-text text-danger" *ngIf="doubleForm.get('club2')?.errors?.minlength">
                 Der Verein muss mindestens fünf Zeichen lang sein!
               </small>
-              <small class="form-text text-danger" *ngIf="doubleForm.get('club')?.errors?.maxlength">
+              <small class="form-text text-danger" *ngIf="doubleForm.get('club2')?.errors?.maxlength">
                 Der Verein darf nicht länger als 50 Zeichen lang sein!
               </small>
-              <small class="form-text text-danger" *ngIf="doubleForm.get('club')?.errors?.pattern">
+              <small class="form-text text-danger" *ngIf="doubleForm.get('club2')?.errors?.pattern">
                 Der Verein darf nur Buchstaben und Zahlen enthalten!
               </small>
             </div>
           </div>
         </fieldset>
       </div>
-      <div class="card-footer text-muted">
-        <button type="submit" class="btn btn-primary" [disabled]="doubleForm.invalid">Verbindlich anmelden</button>
-      </div>
-    </form>
+    </div>
+    <div class="card-footer text-muted">
+      <button type="submit" class="btn btn-primary" [disabled]="doubleForm.invalid">Verbindlich
+        anmelden
+      </button>
+    </div>
+  </form>
 
-    <form class="card m-3" (ngSubmit)="registerForMixed()" [formGroup]="mixedForm" *ngIf="showMixedRegistration">
-      <h5 class="card-header">Mixed</h5>
-      <div class="card-body">
-        <div class="form-group">
-          <label for="mixedDivisions" class="mr-1">Spielklasse:</label>
-          <select id="mixedDivisions" class="form-control" formControlName="division">
-            <option [ngValue]="d" *ngFor="let d of mixedDivisions">{{d.name}}</option>
-          </select>
-          <div
-            *ngIf="mixedForm.get('division')!.invalid && (mixedForm.get('division')!.dirty || mixedForm.get('division')!.touched)">
-            <small class="form-text text-danger"
-                   *ngIf="mixedForm.get('division')?.errors?.required">
-              Spielklasse erforderlich!
-            </small>
-          </div>
+  <form class="card m-3" (ngSubmit)="registerForMixed()" [formGroup]="mixedForm">
+    <h5 class="card-header">Mixed</h5>
+    <div class="card-body">
+      <div class="form-group">
+        <label for="mixedDivisions" class="mr-1">Spielklasse:</label>
+        <select id="mixedDivisions" class="form-control" formControlName="division">
+          <option [ngValue]="d" *ngFor="let d of mixedDivisions">{{d.name}}</option>
+        </select>
+        <div
+          *ngIf="mixedForm.get('division')!.invalid && (mixedForm.get('division')!.dirty || mixedForm.get('division')!.touched)">
+          <small class="form-text text-danger"
+                 *ngIf="mixedForm.get('division')?.errors?.required">
+            Spielklasse erforderlich!
+          </small>
         </div>
+      </div>
 
+      <div class="d-flex flex-wrap">
         <fieldset class="border p-2">
-          <legend class="w-auto" [ngSwitch]="user.gender === Gender[Gender.MALE + '']">
-            <span *ngSwitchCase="true">Partnerin</span>
-            <span *ngSwitchCase="false">Partner</span>
-          </legend>
+          <legend class="w-auto">Spieler</legend>
 
           <div class="form-group">
-            <label class="form-control-label" for="firstMixed">Vorname</label>
-            <input type="text" class="form-control" id="firstMixed" name="first" placeholder="Vorname deines Partners"
-                   formControlName="first" trim>
+            <label class="form-control-label" for="maleFirst">Vorname</label>
+            <input type="text" class="form-control" id="maleFirst" name="maleFirst"
+                   formControlName="maleFirst" trim>
             <div
-              *ngIf="mixedForm.get('first')!.invalid && (mixedForm.get('first')!.dirty || mixedForm.get('first')!.touched)">
-              <small class="form-text text-danger" *ngIf="mixedForm.get('first')?.errors?.required">
+              *ngIf="mixedForm.get('maleFirst')!.invalid && (mixedForm.get('maleFirst')!.dirty || mixedForm.get('maleFirst')!.touched)">
+              <small class="form-text text-danger" *ngIf="mixedForm.get('maleFirst')?.errors?.required">
                 Vorname erforderlich!
               </small>
-              <small class="form-text text-danger" *ngIf="mixedForm.get('first')?.errors?.minlength">
+              <small class="form-text text-danger" *ngIf="mixedForm.get('maleFirst')?.errors?.minlength">
                 Der Vorname muss mindestens ein Zeichen lang sein!
               </small>
-              <small class="form-text text-danger" *ngIf="mixedForm.get('first')?.errors?.maxlength">
+              <small class="form-text text-danger" *ngIf="mixedForm.get('maleFirst')?.errors?.maxlength">
                 Der Vorname darf nicht länger als 50 Zeichen lang sein!
               </small>
-              <small class="form-text text-danger" *ngIf="mixedForm.get('first')?.errors?.pattern">
+              <small class="form-text text-danger" *ngIf="mixedForm.get('maleFirst')?.errors?.pattern">
                 Der Vorname darf nur Buchstaben enthalten!
               </small>
             </div>
           </div>
 
           <div class="form-group">
-            <label class="form-control-label" for="lastMixed">Nachname</label>
-            <input type="text" class="form-control" id="lastMixed" name="last" placeholder="Nachname deines Partners"
-                   formControlName="last" trim>
+            <label class="form-control-label" for="maleLast">Nachname</label>
+            <input type="text" class="form-control" id="maleLast" name="maleLast"
+                   formControlName="maleLast" trim>
             <div
-              *ngIf="mixedForm.get('last')!.invalid && (mixedForm.get('last')!.dirty || mixedForm.get('last')!.touched)">
-              <small class="form-text text-danger" *ngIf="mixedForm.get('last')?.errors?.required">
+              *ngIf="mixedForm.get('maleLast')!.invalid && (mixedForm.get('maleLast')!.dirty || mixedForm.get('maleLast')!.touched)">
+              <small class="form-text text-danger" *ngIf="mixedForm.get('maleLast')?.errors?.required">
                 Nachname erforderlich!
               </small>
-              <small class="form-text text-danger" *ngIf="mixedForm.get('last')?.errors?.minlength">
+              <small class="form-text text-danger" *ngIf="mixedForm.get('maleLast')?.errors?.minlength">
                 Der Nachname muss mindestens ein Zeichen lang sein!
               </small>
-              <small class="form-text text-danger" *ngIf="mixedForm.get('last')?.errors?.maxlength">
+              <small class="form-text text-danger" *ngIf="mixedForm.get('maleLast')?.errors?.maxlength">
                 Der Nachname darf nicht länger als 50 Zeichen lang sein!
               </small>
-              <small class="form-text text-danger" *ngIf="mixedForm.get('last')?.errors?.pattern">
+              <small class="form-text text-danger" *ngIf="mixedForm.get('maleLast')?.errors?.pattern">
                 Der Nachname darf nur Buchstaben enthalten!
               </small>
             </div>
           </div>
 
           <div class="form-group">
-            <label class="form-control-label" for="mixedGender">Geschlecht</label>
-            <select class="form-control" id="mixedGender" name="gender"
-                    formControlName="gender" #gender>
-              <option [ngValue]="null" disabled>Dein Geschlecht</option>
-              <option [ngValue]="Gender.MALE">männlich</option>
-              <option [ngValue]="Gender.FEMALE">weiblich</option>
-            </select>
+            <label class="form-control-label" for="maleClub">Verein</label>
+            <input type="text" class="form-control" id="maleClub" name="maleClub"
+                   formControlName="maleClub" #maleClub trim="blur">
             <div
-              *ngIf="mixedForm.get('gender')!.invalid && (mixedForm.get('gender')!.dirty || mixedForm.get('gender')!.touched)">
-              <small class="form-text text-danger" *ngIf="mixedForm.get('gender')?.errors?.required">
-                Geschlecht erforderlich!
+              *ngIf="mixedForm.get('maleClub')!.invalid && (mixedForm.get('maleClub')!.dirty || mixedForm.get('maleClub')!.touched)">
+              <small class="form-text text-danger" *ngIf="mixedForm.get('maleClub')?.errors?.required">
+                Verein erforderlich!
+              </small>
+              <small class="form-text text-danger" *ngIf="mixedForm.get('maleClub')?.errors?.minlength">
+                Der Verein muss mindestens fünf Zeichen lang sein!
+              </small>
+              <small class="form-text text-danger" *ngIf="mixedForm.get('maleClub')?.errors?.maxlength">
+                Der Verein darf nicht länger als 50 Zeichen lang sein!
+              </small>
+              <small class="form-text text-danger" *ngIf="mixedForm.get('maleClub')?.errors?.pattern">
+                Der Verein darf nur Buchstaben und Zahlen enthalten!
+              </small>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="border p-2">
+          <legend class="w-auto">Partnerin</legend>
+
+          <div class="form-group">
+            <label class="form-control-label" for="femaleFirstMixed">Vorname</label>
+            <input type="text" class="form-control" id="femaleFirstMixed" name="femaleFirst"
+                   formControlName="femaleFirst" trim>
+            <div
+              *ngIf="mixedForm.get('femaleFirst')!.invalid && (mixedForm.get('femaleFirst')!.dirty || mixedForm.get('femaleFirst')!.touched)">
+              <small class="form-text text-danger" *ngIf="mixedForm.get('femaleFirst')?.errors?.required">
+                Vorname erforderlich!
+              </small>
+              <small class="form-text text-danger" *ngIf="mixedForm.get('femaleFirst')?.errors?.minlength">
+                Der Vorname muss mindestens ein Zeichen lang sein!
+              </small>
+              <small class="form-text text-danger" *ngIf="mixedForm.get('femaleFirst')?.errors?.maxlength">
+                Der Vorname darf nicht länger als 50 Zeichen lang sein!
+              </small>
+              <small class="form-text text-danger" *ngIf="mixedForm.get('femaleFirst')?.errors?.pattern">
+                Der Vorname darf nur Buchstaben enthalten!
+              </small>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-control-label" for="femaleLastMixed">Nachname</label>
+            <input type="text" class="form-control" id="femaleLastMixed" name="femaleLast"
+                   formControlName="femaleLast" trim>
+            <div
+              *ngIf="mixedForm.get('femaleLast')!.invalid && (mixedForm.get('femaleLast')!.dirty || mixedForm.get('femaleLast')!.touched)">
+              <small class="form-text text-danger" *ngIf="mixedForm.get('femaleLast')?.errors?.required">
+                Nachname erforderlich!
+              </small>
+              <small class="form-text text-danger" *ngIf="mixedForm.get('femaleLast')?.errors?.minlength">
+                Der Nachname muss mindestens ein Zeichen lang sein!
+              </small>
+              <small class="form-text text-danger" *ngIf="mixedForm.get('femaleLast')?.errors?.maxlength">
+                Der Nachname darf nicht länger als 50 Zeichen lang sein!
+              </small>
+              <small class="form-text text-danger" *ngIf="mixedForm.get('femaleLast')?.errors?.pattern">
+                Der Nachname darf nur Buchstaben enthalten!
               </small>
             </div>
           </div>
 
           <div class="form-group">
             <label class="form-control-label" for="mixedClub">Verein</label>
-            <input type="text" class="form-control" id="mixedClub" name="club" placeholder="Verein deines Partners"
-                   formControlName="club" #club trim="blur">
+            <input type="text" class="form-control" id="mixedClub" name="femaleClub"
+                   formControlName="femaleClub" #femaleClub trim="blur">
             <div
-              *ngIf="mixedForm.get('club')!.invalid && (mixedForm.get('club')!.dirty || mixedForm.get('club')!.touched)">
-              <small class="form-text text-danger" *ngIf="mixedForm.get('club')?.errors?.required">
+              *ngIf="mixedForm.get('femaleClub')!.invalid && (mixedForm.get('femaleClub')!.dirty || mixedForm.get('femaleClub')!.touched)">
+              <small class="form-text text-danger" *ngIf="mixedForm.get('femaleClub')?.errors?.required">
                 Verein erforderlich!
               </small>
-              <small class="form-text text-danger" *ngIf="mixedForm.get('club')?.errors?.minlength">
+              <small class="form-text text-danger" *ngIf="mixedForm.get('femaleClub')?.errors?.minlength">
                 Der Verein muss mindestens fünf Zeichen lang sein!
               </small>
-              <small class="form-text text-danger" *ngIf="mixedForm.get('club')?.errors?.maxlength">
+              <small class="form-text text-danger" *ngIf="mixedForm.get('femaleClub')?.errors?.maxlength">
                 Der Verein darf nicht länger als 50 Zeichen lang sein!
               </small>
-              <small class="form-text text-danger" *ngIf="mixedForm.get('club')?.errors?.pattern">
+              <small class="form-text text-danger" *ngIf="mixedForm.get('femaleClub')?.errors?.pattern">
                 Der Verein darf nur Buchstaben und Zahlen enthalten!
               </small>
             </div>
           </div>
         </fieldset>
       </div>
-      <div class="card-footer text-muted">
-        <button type="submit" class="btn btn-primary" [disabled]="mixedForm.invalid">Verbindlich anmelden</button>
-      </div>
-    </form>
+    </div>
+    <div class="card-footer text-muted">
+      <button type="submit" class="btn btn-primary" [disabled]="mixedForm.invalid">Verbindlich
+        anmelden
+      </button>
+    </div>
+  </form>
 
-    <form class="card m-3" [formGroup]="singleForm" (ngSubmit)="registerForSingle()" *ngIf="showSingleRegistration">
-      <h5 class="card-header">Einzel</h5>
-      <div class="card-body">
-        <div class="form-inline form-group">
-          <label for="singleDivisions" class="mr-1">Spielklasse:</label>
-          <select id="singleDivisions" class="form-control" formControlName="division">
-            <option [ngValue]="d" *ngFor="let d of singleDivisions">{{d.name}}</option>
-          </select>
+  <form class="card m-3" [formGroup]="singleForm" (ngSubmit)="registerForSingle()">
+    <h5 class="card-header">Einzel</h5>
+    <div class="card-body">
+      <div class="form-group">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="fieldType" id="singleMaleRadio"
+                 [value]="FieldType.MALE" formControlName="fieldType"
+                 (change)="resetSingleDivisionName()">
+          <label class="form-check-label" for="singleMaleRadio">Herren</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="fieldType" id="singleFemaleRadio"
+                 [value]="FieldType.FEMALE" formControlName="fieldType"
+                 (change)="resetSingleDivisionName()">
+          <label class="form-check-label" for="singleFemaleRadio">Damen</label>
+        </div>
+      </div>
+      <div class="form-inline form-group">
+        <label for="singleDivisions" class="mr-1">Spielklasse:</label>
+        <select id="singleDivisions" class="form-control" formControlName="division">
+          <option [ngValue]="d" *ngFor="let d of singleDivisions">{{d.name}}</option>
+        </select>
+        <div
+          *ngIf="singleForm.get('division')!.invalid && (singleForm.get('division')!.dirty || singleForm.get('division')!.touched)">
+          <small class="form-text text-danger"
+                 *ngIf="singleForm.get('division')?.errors?.required">
+            Spielklasse erforderlich!
+          </small>
+        </div>
+      </div>
+      <fieldset class="border p-2">
+        <legend class="w-auto" [ngSwitch]="singleFieldType() === FieldType.MALE">
+          <span *ngSwitchCase="true">Spieler</span>
+          <span *ngSwitchCase="false">Spielerin</span>
+        </legend>
+
+        <div class="form-group">
+          <label class="form-control-label" for="first">Vorname</label>
+          <input type="text" class="form-control" id="first" name="first"
+                 formControlName="first" trim>
           <div
-            *ngIf="singleForm.get('division')!.invalid && (singleForm.get('division')!.dirty || singleForm.get('division')!.touched)">
-            <small class="form-text text-danger"
-                   *ngIf="singleForm.get('division')?.errors?.required">
-              Spielklasse erforderlich!
+            *ngIf="singleForm.get('first')!.invalid && (singleForm.get('first')!.dirty || singleForm.get('first')!.touched)">
+            <small class="form-text text-danger" *ngIf="singleForm.get('first')?.errors?.required">
+              Vorname erforderlich!
+            </small>
+            <small class="form-text text-danger" *ngIf="singleForm.get('first')?.errors?.minlength">
+              Der Vorname muss mindestens ein Zeichen lang sein!
+            </small>
+            <small class="form-text text-danger" *ngIf="singleForm.get('first')?.errors?.maxlength">
+              Der Vorname darf nicht länger als 50 Zeichen lang sein!
+            </small>
+            <small class="form-text text-danger" *ngIf="singleForm.get('first')?.errors?.pattern">
+              Der Vorname darf nur Buchstaben enthalten!
             </small>
           </div>
         </div>
-      </div>
-      <div class="card-footer text-muted">
-        <button type="submit" class="btn btn-primary" [disabled]="singleForm.invalid">Verbindlich anmelden</button>
-      </div>
-    </form>
-  </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="last">Nachname</label>
+          <input type="text" class="form-control" id="last" name="last"
+                 formControlName="last" trim>
+          <div
+            *ngIf="singleForm.get('last')!.invalid && (singleForm.get('last')!.dirty || singleForm.get('last')!.touched)">
+            <small class="form-text text-danger" *ngIf="singleForm.get('last')?.errors?.required">
+              Nachname erforderlich!
+            </small>
+            <small class="form-text text-danger" *ngIf="singleForm.get('last')?.errors?.minlength">
+              Der Nachname muss mindestens ein Zeichen lang sein!
+            </small>
+            <small class="form-text text-danger" *ngIf="singleForm.get('last')?.errors?.maxlength">
+              Der Nachname darf nicht länger als 50 Zeichen lang sein!
+            </small>
+            <small class="form-text text-danger" *ngIf="singleForm.get('last')?.errors?.pattern">
+              Der Nachname darf nur Buchstaben enthalten!
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="club">Verein</label>
+          <input type="text" class="form-control" id="club" name="club"
+                 formControlName="club" #club trim="blur">
+          <div
+            *ngIf="singleForm.get('club')!.invalid && (singleForm.get('club')!.dirty || singleForm.get('club')!.touched)">
+            <small class="form-text text-danger" *ngIf="singleForm.get('club')?.errors?.required">
+              Verein erforderlich!
+            </small>
+            <small class="form-text text-danger" *ngIf="singleForm.get('club')?.errors?.minlength">
+              Der Verein muss mindestens fünf Zeichen lang sein!
+            </small>
+            <small class="form-text text-danger" *ngIf="singleForm.get('club')?.errors?.maxlength">
+              Der Verein darf nicht länger als 50 Zeichen lang sein!
+            </small>
+            <small class="form-text text-danger" *ngIf="singleForm.get('club')?.errors?.pattern">
+              Der Verein darf nur Buchstaben und Zahlen enthalten!
+            </small>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+    <div class="card-footer text-muted">
+      <button type="submit" class="btn btn-primary" [disabled]="singleForm.invalid">Verbindlich
+        anmelden
+      </button>
+    </div>
+  </form>
 </div>
 

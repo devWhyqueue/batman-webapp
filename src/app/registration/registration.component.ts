@@ -1,10 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {IRegistration} from '../shared/model/registration.model';
 import {FormBuilder, Validators} from '@angular/forms';
 import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import * as XRegExp from 'xregexp';
-import {UserService} from '../core/auth/user.service';
-import {IUser} from '../core/user/user.model';
 import {DisciplineType} from '../shared/model/discipline.enum';
 import {Gender} from '../core/user/gender.enum';
 import {FieldType} from '../shared/model/field.enum';
@@ -13,6 +10,7 @@ import {RegistrationWithPartner} from '../shared/model/registration-with-partner
 import {RegistrationService} from '../shared/service/registration.service';
 import {DivisionService} from './division.service';
 import {IDivision} from '../shared/model/division.model';
+import {SingleRegistration} from '../shared/model/single-registration.model';
 
 @Component({
   selector: 'app-registration',
@@ -20,103 +18,102 @@ import {IDivision} from '../shared/model/division.model';
   styleUrls: ['./registration.component.scss']
 })
 export class RegistrationComponent implements OnInit {
-  Gender = Gender;
-
-  user: IUser;
-
-  private registrations: IRegistration[];
-
-  showSingleRegistration = false;
-  showDoubleRegistration = false;
-  showMixedRegistration = false;
+  FieldType = FieldType;
 
   singleDivisions = [];
   doubleDivisions = [];
   mixedDivisions = [];
 
   singleForm = this.fb.group({
-    division: [null, [Validators.required]]
-  });
-  doubleForm = this.fb.group({
+    fieldType: [FieldType.MALE],
     division: [null, [Validators.required]],
     first: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50), Validators.pattern(XRegExp('^[\\pL ]+$'))]],
     last: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50), Validators.pattern(XRegExp('^[\\pL ]+$'))]],
-    gender: [{value: null, disabled: true}, [Validators.required]],
     club: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50), Validators.pattern(XRegExp('^[\\pL0-9 ]+$'))]]
+  });
+  doubleForm = this.fb.group({
+    fieldType: [FieldType.MALE],
+    division: [null, [Validators.required]],
+    first1: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50), Validators.pattern(XRegExp('^[\\pL ]+$'))]],
+    last1: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50), Validators.pattern(XRegExp('^[\\pL ]+$'))]],
+    club1: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50), Validators.pattern(XRegExp('^[\\pL0-9 ]+$'))]],
+    first2: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50), Validators.pattern(XRegExp('^[\\pL ]+$'))]],
+    last2: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50), Validators.pattern(XRegExp('^[\\pL ]+$'))]],
+    club2: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50), Validators.pattern(XRegExp('^[\\pL0-9 ]+$'))]]
   });
   mixedForm = this.fb.group({
     division: [null, [Validators.required]],
-    first: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50), Validators.pattern(XRegExp('^[\\pL ]+$'))]],
-    last: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50), Validators.pattern(XRegExp('^[\\pL ]+$'))]],
-    gender: [{value: null, disabled: true}, [Validators.required]],
-    club: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50), Validators.pattern(XRegExp('^[\\pL0-9 ]+$'))]]
+    maleFirst: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50), Validators.pattern(XRegExp('^[\\pL ]+$'))]],
+    maleLast: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50), Validators.pattern(XRegExp('^[\\pL ]+$'))]],
+    maleClub: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50), Validators.pattern(XRegExp('^[\\pL0-9 ]+$'))]],
+    femaleFirst: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50), Validators.pattern(XRegExp('^[\\pL ]+$'))]],
+    femaleLast: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50), Validators.pattern(XRegExp('^[\\pL ]+$'))]],
+    femaleClub: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50), Validators.pattern(XRegExp('^[\\pL0-9 ]+$'))]]
   });
 
   constructor(private registrationService: RegistrationService, private divisionService: DivisionService,
-              private fb: FormBuilder, private userService: UserService, private toastrService: ToastrService) {
+              private fb: FormBuilder, private toastrService: ToastrService) {
   }
 
   ngOnInit() {
-    this.userService.identity().subscribe(user => {
-      this.user = user;
-      this.doubleForm.get(['gender']).setValue(Gender[user.gender]);
-      const mixedGender = user.gender === Gender[String(Gender.MALE)] ? Gender.FEMALE : Gender.MALE;
-      this.mixedForm.get(['gender']).setValue(mixedGender);
-
-      const fieldType = user.gender === Gender[String(Gender.MALE)] ? FieldType.MALE : FieldType.FEMALE;
-      this.divisionService
-        .findByDisciplineTypeAndFieldType(DisciplineType.SINGLE, fieldType)
-        .subscribe((res: HttpResponse<IDivision[]>) => {
-          this.singleDivisions = (res.body || []);
-          this.singleForm.get(['division']).setValue((res.body[0] || null));
-        });
-      this.divisionService
-        .findByDisciplineTypeAndFieldType(DisciplineType.DOUBLE, fieldType)
-        .subscribe((res: HttpResponse<IDivision[]>) => {
-          this.doubleDivisions = (res.body || []);
-          this.doubleForm.get(['division']).setValue((res.body[0] || null));
-        });
-      this.divisionService
-        .findByDisciplineTypeAndFieldType(DisciplineType.MIXED, FieldType.MIXED)
-        .subscribe((res: HttpResponse<IDivision[]>) => {
-          this.mixedDivisions = (res.body || []);
-          this.mixedForm.get(['division']).setValue((res.body[0] || null));
-        });
-
-
-      this.registrationService
-        .getOwnCurrentRegistrations()
-        .subscribe((res: HttpResponse<IRegistration[]>) => {
-          this.registrations = (res.body || []);
-          this.showSingleRegistration = !this.isRegisteredForDisciplineType(DisciplineType.SINGLE);
-          this.showDoubleRegistration = !this.isRegisteredForDisciplineType(DisciplineType.DOUBLE);
-          this.showMixedRegistration = !this.isRegisteredForDisciplineType(DisciplineType.MIXED);
-        });
+    this.divisionService
+    .findByDisciplineTypeAndFieldType(DisciplineType.SINGLE, this.singleForm.get(['fieldType']).value)
+    .subscribe((res: HttpResponse<IDivision[]>) => {
+      console.log(res.body);
+      this.singleDivisions = (res.body || []);
+      this.singleForm.get(['division']).setValue((res.body[0] || null));
+    });
+    this.divisionService
+    .findByDisciplineTypeAndFieldType(DisciplineType.DOUBLE, this.doubleForm.get(['fieldType']).value)
+    .subscribe((res: HttpResponse<IDivision[]>) => {
+      this.doubleDivisions = (res.body || []);
+      this.doubleForm.get(['division']).setValue((res.body[0] || null));
+    });
+    this.divisionService
+    .findByDisciplineTypeAndFieldType(DisciplineType.MIXED, FieldType.MIXED)
+    .subscribe((res: HttpResponse<IDivision[]>) => {
+      this.mixedDivisions = (res.body || []);
+      this.mixedForm.get(['division']).setValue((res.body[0] || null));
     });
   }
 
-  private isRegisteredForDisciplineType(disciplineType: DisciplineType): boolean {
-    return this.registrations
-      .filter(r => r.tournamentDiscipline.discipline.disciplineType === DisciplineType[String(disciplineType)])
-      .length > 0;
+  resetDoubleDivisionName() {
+    if (!this.doubleForm.get(['division']).value && this.doubleDivisions.length) {
+      this.doubleForm.get(['division']).setValue(this.doubleDivisions[0]);
+    }
+  }
+
+  resetSingleDivisionName() {
+    if (!this.singleForm.get(['division']).value && this.singleDivisions.length) {
+      this.singleForm.get(['division']).setValue(this.singleDivisions[0]);
+    }
   }
 
   registerForSingle() {
+    const gender = this.singleForm.get(['fieldType']).value === FieldType.MALE ? Gender.MALE : Gender.FEMALE;
     const division = this.singleForm.get(['division']).value;
-    this.registrationService.registerForSingle(division).subscribe(
+    const firstName = this.singleForm.get(['first']).value;
+    const lastName = this.singleForm.get(['last']).value;
+    const club = this.singleForm.get(['club']).value;
+    this.registrationService.registerForSingle(new SingleRegistration(division, {firstName, lastName, gender, club})).subscribe(
       () => (this.success()),
       response => this.processError(response)
     );
   }
 
   registerForDouble() {
+    const gender = this.doubleForm.get(['fieldType']).value === FieldType.MALE ? Gender.MALE : Gender.FEMALE;
     const division = this.doubleForm.get(['division']).value;
-    const firstName = this.doubleForm.get(['first']).value;
-    const lastName = this.doubleForm.get(['last']).value;
-    const gender = this.doubleForm.get(['gender']).value;
-    const club = this.doubleForm.get(['club']).value;
+    const first1 = this.doubleForm.get(['first1']).value;
+    const last1 = this.doubleForm.get(['last1']).value;
+    const club1 = this.doubleForm.get(['club1']).value;
+    const first2 = this.doubleForm.get(['first2']).value;
+    const last2 = this.doubleForm.get(['last2']).value;
+    const club2 = this.doubleForm.get(['club2']).value;
     this.registrationService.registerForDouble(
-      new RegistrationWithPartner({firstName, lastName, gender, club}, division)).subscribe(
+      new RegistrationWithPartner(division, {firstName: first1, lastName: last1, gender, club: club1},
+        {firstName: first2, lastName: last2, gender, club: club2}))
+    .subscribe(
       () => (this.success()),
       response => this.processError(response)
     );
@@ -124,12 +121,17 @@ export class RegistrationComponent implements OnInit {
 
   registerForMixed() {
     const division = this.mixedForm.get(['division']).value;
-    const firstName = this.mixedForm.get(['first']).value;
-    const lastName = this.mixedForm.get(['last']).value;
-    const gender = this.mixedForm.get(['gender']).value;
-    const club = this.mixedForm.get(['club']).value;
+    const maleFirst = this.mixedForm.get(['maleFirst']).value;
+    const maleLast = this.mixedForm.get(['maleLast']).value;
+    const maleClub = this.mixedForm.get(['maleClub']).value;
+    const femaleFirst = this.mixedForm.get(['femaleFirst']).value;
+    const femaleLast = this.mixedForm.get(['femaleLast']).value;
+    const femaleClub = this.mixedForm.get(['femaleClub']).value;
     this.registrationService.registerForMixed(
-      new RegistrationWithPartner({firstName, lastName, gender, club}, division)).subscribe(
+      new RegistrationWithPartner(division,
+        {firstName: maleFirst, lastName: maleLast, gender: Gender.MALE, club: maleClub},
+        {firstName: femaleFirst, lastName: femaleLast, gender: Gender.FEMALE, club: femaleClub}))
+    .subscribe(
       () => (this.success()),
       response => this.processError(response)
     );
@@ -163,5 +165,13 @@ export class RegistrationComponent implements OnInit {
     } else {
       this.toastrService.error('Bitte versuche es später erneut.', 'Registrierung fehlgeschlagen');
     }
+  }
+
+  doubleFieldType() {
+    return this.doubleForm.get(['fieldType']).value;
+  }
+
+  singleFieldType() {
+    return this.singleForm.get(['fieldType']).value;
   }
 }

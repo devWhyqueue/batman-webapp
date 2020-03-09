@@ -5,6 +5,7 @@ import {IDivision} from '../model/division.model';
 import {IRegistrationWithPartner} from '../model/registration-with-partner.model';
 import {environment} from '../../../environments/environment';
 import {IRegistration} from '../model/registration.model';
+import {ISingleRegistration} from '../model/single-registration.model';
 
 @Injectable({providedIn: 'root'})
 export class RegistrationService {
@@ -21,9 +22,9 @@ export class RegistrationService {
     return this.http.get<IRegistration[]>(this.registrationServerUrl + 'tournaments/current/registrations/self', { observe: 'response'});
   }
 
-  registerForSingle(division: IDivision): Observable<HttpResponse<IRegistration>> {
+  registerForSingle(singleRegistration: ISingleRegistration): Observable<HttpResponse<IRegistration>> {
     return this.http.post<IRegistration>(this.registrationServerUrl + 'tournaments/current/registrations/self/disciplineType/SINGLE',
-      division, {observe: 'response'});
+      singleRegistration, {observe: 'response'});
   }
 
   registerForDouble(registrationWithPartner: IRegistrationWithPartner): Observable<HttpResponse<IRegistration>> {

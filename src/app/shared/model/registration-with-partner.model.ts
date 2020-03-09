@@ -1,13 +1,14 @@
-import {Player} from './player.model';
-import {Division} from './division.model';
+import {IPlayer} from './player.model';
+import {IDivision} from './division.model';
 
 export interface IRegistrationWithPartner {
-  partner?: Player;
-  division?: Division;
+  division?: IDivision;
+  player?: IPlayer;
+  partner?: IPlayer;
 }
 
 export class RegistrationWithPartner implements IRegistrationWithPartner{
 
-  constructor(public partner?: Player, public division?: Division) {
+  constructor(public division?: IDivision, public player?: IPlayer, public partner?: IPlayer) {
   }
 }
