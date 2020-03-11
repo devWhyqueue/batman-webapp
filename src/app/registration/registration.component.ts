@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import * as XRegExp from 'xregexp';
 import {DisciplineType} from '../shared/model/discipline.enum';
@@ -9,7 +9,7 @@ import {ToastrService} from 'ngx-toastr';
 import {RegistrationWithPartner} from '../shared/model/registration-with-partner.model';
 import {RegistrationService} from '../shared/service/registration.service';
 import {DivisionService} from './division.service';
-import {IDivision} from '../shared/model/division.model';
+import {Division, IDivision} from '../shared/model/division.model';
 import {SingleRegistration} from '../shared/model/single-registration.model';
 
 @Component({
@@ -56,37 +56,29 @@ export class RegistrationComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loadDivisions(DisciplineType.SINGLE, this.singleForm.get(['fieldType']).value, this.singleDivisions, this.singleForm);
+    this.loadDivisions(DisciplineType.DOUBLE, this.doubleForm.get(['fieldType']).value, this.doubleDivisions, this.doubleForm);
+    this.loadDivisions(DisciplineType.MIXED, FieldType.MIXED, this.mixedDivisions, this.mixedForm);
+  }
+
+  private loadDivisions(disciplineType: DisciplineType, fieldType: FieldType, divisions: IDivision[], form: FormGroup) {
     this.divisionService
-    .findByDisciplineTypeAndFieldType(DisciplineType.SINGLE, this.singleForm.get(['fieldType']).value)
+    .findByDisciplineTypeAndFieldType(disciplineType, fieldType)
     .subscribe((res: HttpResponse<IDivision[]>) => {
-      console.log(res.body);
-      this.singleDivisions = (res.body || []);
-      this.singleForm.get(['division']).setValue((res.body[0] || null));
-    });
-    this.divisionService
-    .findByDisciplineTypeAndFieldType(DisciplineType.DOUBLE, this.doubleForm.get(['fieldType']).value)
-    .subscribe((res: HttpResponse<IDivision[]>) => {
-      this.doubleDivisions = (res.body || []);
-      this.doubleForm.get(['division']).setValue((res.body[0] || null));
-    });
-    this.divisionService
-    .findByDisciplineTypeAndFieldType(DisciplineType.MIXED, FieldType.MIXED)
-    .subscribe((res: HttpResponse<IDivision[]>) => {
-      this.mixedDivisions = (res.body || []);
-      this.mixedForm.get(['division']).setValue((res.body[0] || null));
+      divisions.length = 0;
+      divisions.push(...res.body);
+      if (!form.get(['division']).value && divisions.length) {
+        form.get(['division']).setValue((res.body[0] || null));
+      }
     });
   }
 
-  resetDoubleDivisionName() {
-    if (!this.doubleForm.get(['division']).value && this.doubleDivisions.length) {
-      this.doubleForm.get(['division']).setValue(this.doubleDivisions[0]);
-    }
+  resetDoubleDivision() {
+    this.loadDivisions(DisciplineType.DOUBLE, this.doubleForm.get(['fieldType']).value, this.doubleDivisions, this.doubleForm);
   }
 
-  resetSingleDivisionName() {
-    if (!this.singleForm.get(['division']).value && this.singleDivisions.length) {
-      this.singleForm.get(['division']).setValue(this.singleDivisions[0]);
-    }
+  resetSingleDivision() {
+    this.loadDivisions(DisciplineType.SINGLE, this.singleForm.get(['fieldType']).value, this.singleDivisions, this.singleForm);
   }
 
   registerForSingle() {
@@ -96,7 +88,7 @@ export class RegistrationComponent implements OnInit {
     const lastName = this.singleForm.get(['last']).value;
     const club = this.singleForm.get(['club']).value;
     this.registrationService.registerForSingle(new SingleRegistration(division, {firstName, lastName, gender, club})).subscribe(
-      () => (this.success()),
+      () => (this.success(this.singleForm, this.singleDivisions)),
       response => this.processError(response)
     );
   }
@@ -114,7 +106,7 @@ export class RegistrationComponent implements OnInit {
       new RegistrationWithPartner(division, {firstName: first1, lastName: last1, gender, club: club1},
         {firstName: first2, lastName: last2, gender, club: club2}))
     .subscribe(
-      () => (this.success()),
+      () => (this.success(this.doubleForm, this.doubleDivisions)),
       response => this.processError(response)
     );
   }
@@ -132,14 +124,20 @@ export class RegistrationComponent implements OnInit {
         {firstName: maleFirst, lastName: maleLast, gender: Gender.MALE, club: maleClub},
         {firstName: femaleFirst, lastName: femaleLast, gender: Gender.FEMALE, club: femaleClub}))
     .subscribe(
-      () => (this.success()),
+      () => (this.success(this.mixedForm, this.mixedDivisions)),
       response => this.processError(response)
     );
   }
 
-  private success() {
+  private resetForm(form: FormGroup, divisions: Division[]) {
+    form.reset({fieldType: FieldType.MALE});
+    form.get(['division']).setValue(divisions[0]);
+  }
+
+  private success(form: FormGroup, divisions: Division[]) {
     this.toastrService.success('Klicke jetzt in der Navigationsleiste auf Status, um den Stand deiner Registrierung zu prüfen.',
       'Erfolgreich registriert');
+    this.resetForm(form, divisions);
   }
 
   private processError(response: HttpErrorResponse): void {
