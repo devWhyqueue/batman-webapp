@@ -1,10 +1,11 @@
-import {Component, HostListener, OnInit} from '@angular/core';
-import {Step} from '../shared/model/step.model';
+import {Component, OnInit} from '@angular/core';
 import {RegistrationService} from '../shared/service/registration.service';
 import {IRegistration} from '../shared/model/registration.model';
 import {HttpResponse} from '@angular/common/http';
-import {State} from '../shared/model/state.enum';
 import {DisciplineType} from '../shared/model/discipline.enum';
+import {TableService} from '../shared/table/table.service';
+import {RegistrationFilter} from '../shared/service/registration.filter';
+import {Gender} from '../core/user/gender.enum';
 
 @Component({
   selector: 'app-state',
@@ -13,25 +14,19 @@ import {DisciplineType} from '../shared/model/discipline.enum';
 })
 export class StateComponent implements OnInit {
 
-  private screenWidth: number;
+  singleHeaders = ['Vorname', 'Nachname', 'Status'];
+  singleRegistered = [];
+
+  doubleHeaders = ['Spieler', 'Partner', 'Status'];
+  doubleRegistered = [];
+
+  mixedHeaders = ['Spieler', 'Partnerin', 'Status'];
+  mixedRegistered = [];
 
   private registrations: IRegistration[];
+  private registrationFilter: RegistrationFilter;
 
-  singleSteps = [];
-  doubleSteps = [];
-  mixedSteps = [];
-
-  constructor(private registrationService: RegistrationService) {
-    this.getScreenSize();
-  }
-
-  @HostListener('window:resize', ['$event'])
-  private getScreenSize(event?) {
-    this.screenWidth = window.innerWidth;
-  }
-
-  private isMobile(): boolean {
-    return this.screenWidth < 576;
+  constructor(private registrationService: RegistrationService, private tableService: TableService) {
   }
 
   ngOnInit() {
@@ -39,31 +34,40 @@ export class StateComponent implements OnInit {
     .getOwnCurrentRegistrations()
     .subscribe((res: HttpResponse<IRegistration[]>) => {
       this.registrations = (res.body || []);
-      this.initSingleSteps();
-      this.initDoubleSteps();
-      this.initMixedSteps();
+      this.registrationFilter = new RegistrationFilter(this.registrations);
+      this.singleFilter();
+      this.doubleFilter();
+      this.mixedFilter();
     });
   }
 
-  private initSingleSteps(): void {
-    const singleRegistration = this.registrations
-    .find(r => r.tournamentDiscipline.discipline.disciplineType === DisciplineType[String(DisciplineType.SINGLE)]);
-    this.singleSteps = singleRegistration ?
-      Step.toSteps(State[String(singleRegistration.state)], singleRegistration.tournamentDiscipline, this.isMobile()) : [];
+  private singleFilter(): void {
+    this.singleRegistered = this.tableService.initItems(
+      this.registrationFilter.starting(DisciplineType.SINGLE),
+      [['player.firstName'], ['player.lastName'], ['state']]);
+    console.log(this.singleRegistered);
   }
 
-  private initDoubleSteps(): void {
-    const doubleRegistration = this.registrations
-    .find(r => r.tournamentDiscipline.discipline.disciplineType === DisciplineType[String(DisciplineType.DOUBLE)]);
-    this.doubleSteps = doubleRegistration
-      ? Step.toSteps(State[String(doubleRegistration.state)], doubleRegistration.tournamentDiscipline, this.isMobile()) : [];
+  private doubleFilter(): void {
+    this.doubleRegistered = this.tableService.initItems(
+      this.registrationFilter.starting(DisciplineType.DOUBLE),
+      [['player.firstName', 'player.lastName'], ['partner.firstName', 'partner.lastName'], ['state']]);
   }
 
-  private initMixedSteps(): void {
-    const mixedRegistration = this.registrations
-    .find(r => r.tournamentDiscipline.discipline.disciplineType === DisciplineType[String(DisciplineType.MIXED)]);
-    this.mixedSteps = mixedRegistration
-      ? Step.toSteps(State[String(mixedRegistration.state)], mixedRegistration.tournamentDiscipline, this.isMobile()) : [];
+  private mixedFilter(): void {
+    const mixedStartingRegs = this.registrationFilter.starting(DisciplineType.MIXED);
+    this.switchPlayerAndPartner(mixedStartingRegs);
+    this.mixedRegistered = this.tableService.initItems(mixedStartingRegs,
+      [['player.firstName', 'player.lastName'], ['partner.firstName', 'partner.lastName'], ['state']]);
   }
 
+  private switchPlayerAndPartner(registrations: IRegistration[]): void {
+    registrations.forEach(r => {
+      if (Gender[String(r.player.gender)] === Gender.FEMALE) {
+        const p = r.player;
+        r.player = r.partner;
+        r.partner = p;
+      }
+    });
+  }
 }

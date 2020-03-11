@@ -70,8 +70,7 @@ export class ParticipantsComponent implements OnInit {
     }
 
     this.singleStarting = this.tableService.initItems(
-      this.registrationFilter.starting(DisciplineType.SINGLE,
-        this.singleForm.get(['divisionName']).value, this.singleForm.get(['fieldType']).value),
+      this.registrationFilter.starting(DisciplineType.SINGLE, this.singleForm.get(['fieldType']).value, this.singleForm.get(['divisionName']).value),
       [['player.firstName'], ['player.lastName'], ['player.club']]);
 
     this.singleWaiting = this.tableService.initItems(
@@ -91,8 +90,7 @@ export class ParticipantsComponent implements OnInit {
     }
 
     this.doubleStarting = this.tableService.initItems(
-      this.registrationFilter.starting(DisciplineType.DOUBLE,
-        this.doubleForm.get(['divisionName']).value, this.doubleForm.get(['fieldType']).value),
+      this.registrationFilter.starting(DisciplineType.DOUBLE, this.doubleForm.get(['fieldType']).value, this.doubleForm.get(['divisionName']).value),
       [['player.firstName', 'player.lastName'], ['player.club'], ['partner.firstName', 'partner.lastName'], ['partner.club']]);
 
     this.doubleWaiting = this.tableService.initItems(
@@ -111,8 +109,7 @@ export class ParticipantsComponent implements OnInit {
       this.mixedForm.get(['divisionName']).setValue(this.mixedDivisions[0]);
     }
 
-    const mixedStartingRegs = this.registrationFilter.starting(DisciplineType.MIXED,
-      this.mixedForm.get(['divisionName']).value, FieldType.MIXED);
+    const mixedStartingRegs = this.registrationFilter.starting(DisciplineType.MIXED, FieldType.MIXED, this.mixedForm.get(['divisionName']).value);
     this.switchPlayerAndPartner(mixedStartingRegs);
     this.mixedStarting = this.tableService.initItems(mixedStartingRegs,
       [['player.firstName', 'player.lastName'], ['player.club'], ['partner.firstName', 'partner.lastName'], ['partner.club']]);
