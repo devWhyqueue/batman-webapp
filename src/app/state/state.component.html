@@ -2,16 +2,37 @@
 
 <h1>Anmeldestatus</h1>
 <hr/>
+<p *ngIf="numOfRegistrations > 0">Insgesamt hast du in diesem Jahr
+  <span class="font-weight-bold">{{numOfRegistrations}}</span> Registrierungen eingereicht.</p>
+<div *ngIf="registrationFeeSum > 0">
+  <span>Die Zahlung der Meldegebühren in Höhe von
+    <span class="font-weight-bold">{{registrationFeeSum}}€</span> ist noch ausstehend.</span><br>
+  <span>Bitte überweise den Betrag auf folgendes Konto:</span><br>
+  <p class="border p-2">
+  <span><span
+    class="font-weight-bold">Zahlungsempfänger: </span>ATV Haltern von 1882 e.V.</span><br>
+    <span><span class="font-weight-bold">IBAN: </span> DE78 4266 1330 0100 8426 01</span><br>
+    <span><span class="font-weight-bold">BIC: </span> GENODEM1HLT</span><br>
+    <span><span class="font-weight-bold">Verwendungszweck: </span> Meldegebühren Badminton-Stauseepokal,
+    <span class="font-italic">[DEIN VEREIN], </span>
+  <span class="font-italic">[SPIELERNAMEN]</span></span>
+  </p>
+</div>
 
-<h2>Angemeldete Einzel</h2>
-<hr align="left" class="w-50"/>
-<app-table [headers]="singleHeaders" [items]="singleRegistered"></app-table>
+<ng-container [ngSwitch]="numOfRegistrations > 0">
+  <ng-container *ngSwitchCase="true">
+    <h2>Angemeldete Einzel</h2>
+    <hr align="left" class="w-50"/>
+    <app-table [headers]="singleHeaders" [items]="singleRegistered"></app-table>
 
-<h2 class="mt-3">Angemeldete Doppel</h2>
-<hr align="left" class="w-50"/>
-<app-table [headers]="doubleHeaders" [items]="doubleRegistered"></app-table>
+    <h2 class="mt-3">Angemeldete Doppel</h2>
+    <hr align="left" class="w-50"/>
+    <app-table [headers]="doubleHeaders" [items]="doubleRegistered"></app-table>
 
-<h2 class="mt-3">Angemeldete Mixeds</h2>
-<hr align="left" class="w-50"/>
-<app-table [headers]="mixedHeaders" [items]="mixedRegistered"></app-table>
+    <h2 class="mt-3">Angemeldete Mixeds</h2>
+    <hr align="left" class="w-50"/>
+    <app-table [headers]="mixedHeaders" [items]="mixedRegistered"></app-table>
+  </ng-container>
+  <p *ngSwitchCase="false">Du hast in diesem Jahr noch keine Registrierungen eingereicht.</p>
+</ng-container>
 

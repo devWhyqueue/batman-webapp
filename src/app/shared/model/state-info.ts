@@ -4,9 +4,9 @@ import {formatDate} from '@angular/common';
 
 export class StateInfo {
 
-  static getTitle(state: State): string {
+  static getTitle(stateName: string): string {
     let title: string;
-    switch (state) {
+    switch (State[stateName]) {
       case State.WAITING:
         title = 'Auf Warteliste';
         break;

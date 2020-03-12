@@ -10,7 +10,6 @@ import {ParticipantsComponent} from './participants/participants.component';
 import {ProfileComponent} from './profile/profile.component';
 import {RegistrationComponent} from './registration/registration.component';
 import {StateComponent} from './state/state.component';
-import {TrackerComponent} from './state/tracker/tracker.component';
 import {BrowserModule} from '@angular/platform-browser';
 import {SharedModule} from './shared/shared.module';
 import {CoreModule} from './core/core.module';
@@ -25,7 +24,6 @@ import {CoreModule} from './core/core.module';
     ProfileComponent,
     RegistrationComponent,
     StateComponent,
-    TrackerComponent
   ],
   imports: [
     BrowserModule,

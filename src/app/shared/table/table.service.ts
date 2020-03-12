@@ -22,4 +22,10 @@ export class TableService {
     });
     return items;
   }
+
+  replaceColumnValues(data: any[], columnIndex: number, callback: ((oldValue: string) => string)) {
+    data.forEach(obj => {
+      obj[columnIndex] = callback(_.get(obj, columnIndex));
+    });
+  }
 }
