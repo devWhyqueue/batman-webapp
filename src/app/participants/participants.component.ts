@@ -18,7 +18,7 @@ import {Gender} from '../core/user/gender.enum';
 export class ParticipantsComponent implements OnInit {
   FieldType = FieldType;
 
-  private registrations: IRegistration[];
+  registrations: IRegistration[] = [];
   private registrationFilter: RegistrationFilter;
 
   singleHeaders = ['Vorname', 'Nachname', 'Verein'];
