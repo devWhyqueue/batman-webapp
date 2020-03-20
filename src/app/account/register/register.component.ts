@@ -28,6 +28,8 @@ export class RegisterComponent implements AfterViewInit {
     last: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50), Validators.pattern(XRegExp('^[\\pL ]+$'))]],
     gender: [null, [Validators.required]],
     club: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50), Validators.pattern(XRegExp('^[\\pL0-9 ]+$'))]],
+    dse: [false, [Validators.requiredTrue]],
+    photo: [false, [Validators.requiredTrue]],
   });
 
   constructor(private fb: FormBuilder, private userService: UserService, private toastrService: ToastrService, private http: HttpClient) {

@@ -150,8 +150,7 @@
   </div>
 
   <div class="form-group">
-    <label class="form-control-label" for="confirmPassword"
-           jhiTranslate="global.form.confirmpassword.label">Passwort bestätigen</label>
+    <label class="form-control-label" for="confirmPassword">Passwort bestätigen</label>
     <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
            placeholder="Passwort erneut eingeben"
            formControlName="confirmPassword">
@@ -173,6 +172,29 @@
         Das Bestätigungspasswort darf nicht länger als 50 Zeichen lang sein!
       </small>
     </div>
+  </div>
+
+  <div class="form-group custom-control custom-checkbox">
+    <input type="checkbox" class="custom-control-input" id="dse" formControlName="dse">
+    <label class="custom-control-label" for="dse">Ich willige in die Verarbeitung meiner Daten ein.
+      Die <a class="text-primary font-weight-bold" target="_blank" routerLink="../dse">Datenschutzerklärung</a>
+      enthält weitere Erläuterungen dazu.
+    </label>
+    <small class="form-text text-danger"
+           *ngIf="registerForm.get('dse')!.invalid && (registerForm.get('dse')!.dirty || registerForm.get('dse')!.touched) && registerForm.get('dse')?.errors?.required">
+      Einwilligung erforderlich!
+    </small>
+  </div>
+
+  <div class="form-group custom-control custom-checkbox mb-3">
+    <input type="checkbox" class="custom-control-input" id="photo" formControlName="photo">
+    <label class="custom-control-label" for="photo">Während des Turniers werden Fotos gemacht, die
+      ggf. auf der Vereinsseite oder in der lokalen Zeitung veröffentlicht werden. Dem stimme ich
+      zu.</label>
+    <small class="form-text text-danger"
+           *ngIf="registerForm.get('photo')!.invalid && (registerForm.get('photo')!.dirty || registerForm.get('photo')!.touched) && registerForm.get('photo')?.errors?.required">
+      Einwilligung erforderlich!
+    </small>
   </div>
 
   <button type="submit" [disabled]="registerForm.invalid" class="btn btn-primary">Registrieren
